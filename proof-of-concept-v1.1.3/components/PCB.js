@@ -1,6 +1,6 @@
 //Parent Code Block
 //For this version of the project this will consist of 
-//a node that can either be a perlin noise 
+//a node that can either be a noiseNode or a gridNode
 
 function PCB(x,y,w,h, title = "UNTITLED", font){
     this.font = font;
@@ -18,6 +18,9 @@ function PCB(x,y,w,h, title = "UNTITLED", font){
             this.y+Math.floor(this.w / 15),Math.floor(this.w / 15)),
     };
     
+    //this is where all the sliders, inputs, functionality, etc is stored
+    //within a block of code
+    this.elements = [];
 
     this.titleSize = Math.floor(this.w / 15);
     this.color = (255,255,255);
@@ -31,6 +34,10 @@ function PCB(x,y,w,h, title = "UNTITLED", font){
         fill(this.color);
         rect(this.x,this.y,this.w,this.h, this.radius);
         this.titleVis();
+        if(this.elements.length > 0){
+            this.elements.forEach(({type,element}) => element.show())
+        }
+            
     }
 
     this.updateTitle = () => {
@@ -55,7 +62,7 @@ function PCB(x,y,w,h, title = "UNTITLED", font){
 
     this.anchorPoint = [-1,-1];
     this.anchored = false;
-    
+
     this.move = (newX,newY) => {
         //this is to move the object around the canvas 
         //to be called if the mouse is held down on the title section
@@ -72,9 +79,13 @@ function PCB(x,y,w,h, title = "UNTITLED", font){
         //to be called if mouse held on either corners of the node
     }
 
-
-    this.addSlider = () => {
+    this.addSlider = (title,minVal,maxVal, Parent, steps = -1, value = null) => {
         //adding  slider to the node
+        this.itemCoords.push([this.title.pos[0]+10, this.title.pos[1]]);
+        this.elements.push(
+            {type : "slider",
+             element : new Slider(title,minVal,maxVal, Parent, steps, value)
+            });
     }
 
     

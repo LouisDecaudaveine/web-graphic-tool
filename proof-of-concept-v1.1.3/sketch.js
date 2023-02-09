@@ -13,12 +13,14 @@ function setup() {
     col = 125
   });
   temp.push(new PCB(100,100,300,200, "Untitled", font));
+  temp[0].addSlider("test", 0, 10, temp[0]);
 }
 
 
 function draw() {
   background(col);
   temp[0].show();
+  // noLoop()
   
 }
 function mousePressed() {

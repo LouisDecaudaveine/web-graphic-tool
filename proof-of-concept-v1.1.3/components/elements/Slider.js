@@ -10,12 +10,16 @@ function Slider(title,minVal,maxVal, Parent, steps = -1, value = null) {
     //will come back to this.
     this.x = Parent.itemCoords[Parent.itemCoords.length-1][0];
     this.y = Parent.itemCoords[Parent.itemCoords.length-1][1];
-    
     this.slider = createSlider(this.minVal, this.maxVal, this.value);
-    this.slider.position(this.x,this.y);
-    text(this.title, this.slider.x * 2 + this.slider.width,
-         Parent.itemCoords[Parent.itemCoords.length-1][1])
 
+    this.show = () =>{
+        this.slider.position(this.x,this.y);
+        push();
+            fill(125);
+            text(this.title, 100, 100)
+        pop();
+    }
+    
     //down the line changing the slider to block slider
     //displayed through this function
     this.prettyShow = () => {}
