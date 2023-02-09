@@ -2,13 +2,23 @@
 //For this version of the project this will consist of 
 //a node that can either be a perlin noise 
 
-function PCB(x,y,w,h, title = "UNTITLED"){
-
+function PCB(x,y,w,h, title = "UNTITLED", font){
+    this.font = font;
+    textFont(this.font)
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
-    this.title = title;
+
+    this.title = {
+        "text" : title,
+        "size" : Math.floor(this.w / 15),
+        "pos" : [this.x+Math.floor(this.w / 30), this.y+Math.floor(this.w / 15)],
+        "bbox" : this.font.textBounds(title,this.x+Math.floor(this.w / 15),
+            this.y+Math.floor(this.w / 15),Math.floor(this.w / 15)),
+    };
+    
+
     this.titleSize = Math.floor(this.w / 15);
     this.color = (255,255,255);
     this.radius = w/25;
@@ -21,23 +31,40 @@ function PCB(x,y,w,h, title = "UNTITLED"){
         fill(this.color);
         rect(this.x,this.y,this.w,this.h, this.radius);
         this.titleVis();
-        
+    }
+
+    this.updateTitle = () => {
+        this.title.pos = [this.x+this.title.size/2,this.y+this.title.size]
+        this.title.bbox = font.textBounds(this.title.text, 
+            this.title.pos[0], this.title.pos[1],this.title.size);  
     }
 
     this.titleVis = () => {
         fill(125);
-        textAlign(LEFT,CENTER);
-        textSize(this.titleSize);
-        text(title,this.x+this.titleSize, this.y+this.titleSize);
+        textSize(this.title.size);
+        text(this.title.text,this.title.pos[0], this.title.pos[1]);
+
+        //this is to show the bounding box of the text used for adding elements to block
+        
+        // push();
+        //     noFill()
+        //     stroke(255,0,0);
+        //     rect(this.title.bbox.x, this.title.bbox.y, this.title.bbox.w,this.title.bbox.h)
+        // pop();  
     }
 
     this.anchorPoint = [-1,-1];
     this.anchored = false;
+    
     this.move = (newX,newY) => {
         //this is to move the object around the canvas 
         //to be called if the mouse is held down on the title section
-        this.x = newX;
-        this.y = newY;
+        this.x += Math.floor(mouseX) - this.anchorPoint[0];
+        this.y += Math.floor(mouseY) - this.anchorPoint[1]; 
+         
+        this.updateTitle();
+        
+        this.anchorPoint = [Math.floor(mouseX),Math.floor(mouseY)];
     }
     
     this.resize = () => {
@@ -45,4 +72,10 @@ function PCB(x,y,w,h, title = "UNTITLED"){
         //to be called if mouse held on either corners of the node
     }
 
+
+    this.addSlider = () => {
+        //adding  slider to the node
+    }
+
+    
 }

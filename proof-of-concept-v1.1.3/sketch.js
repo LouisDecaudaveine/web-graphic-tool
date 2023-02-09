@@ -1,14 +1,20 @@
 let temp = [];
 let inputMP3;
 let col = 0
+let font;
+
+function preload() {
+  font = loadFont('./assets/mirror 82_v2.otf');
+}
 
 function setup() {
   createCanvas(800, 800);
   inputMP3 = createFileInput(() => {
     col = 125
   });
-  temp.push(new PCB(100,100,300,200, "IDIAT"));
+  temp.push(new PCB(100,100,300,200, "Untitled", font));
 }
+
 
 function draw() {
   background(col);
@@ -32,9 +38,7 @@ function mouseDragged() {
     //if an anchor point has been set then move block to mouse
     //and update the anchor point
     if(block.anchored) {
-      block.x += Math.floor(mouseX) - block.anchorPoint[0];
-      block.y += Math.floor(mouseY) - block.anchorPoint[1];  
-      block.anchorPoint = [Math.floor(mouseX),Math.floor(mouseY)]
+      block.move();
     }
   })
 }
