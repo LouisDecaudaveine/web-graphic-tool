@@ -3,6 +3,8 @@
 //a node that can either be a noiseNode or a gridNode
 
 function PCB(x,y,w,h, title = "UNTITLED", font){
+    //havent figured out how to node modules with p5 yet
+    this.id = (int)(random(0,Number.MAX_SAFE_INTEGER));
     this.font = font;
     textFont(this.font)
     this.x = x;
@@ -92,11 +94,13 @@ function PCB(x,y,w,h, title = "UNTITLED", font){
         this.anchorPoint = [Math.floor(mouseX),Math.floor(mouseY)];
     }
     
+    //TODO
     this.resize = () => {
         //resize the block
         //to be called if mouse held on either corners of the node
     }
 
+    //DISCONTINUED
     this.addSlider = (title,minVal,maxVal, Parent, steps = 0, value = null) => {
         //adding  slider to the node
         let id = Math.floor(Math.random(0,99999));

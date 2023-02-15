@@ -1,4 +1,5 @@
 let temp = [];
+let connections = [];
 let inputMP3;
 let col = 0
 let font;
@@ -19,18 +20,24 @@ function setup() {
   // temp.push(new PCB(100,400,300,200, "Receiving", font));
   //   temp[1].addSlider("test", 0, 10, temp[0]);
   //   temp[1].addSlider("test2", 0, 10, temp[0]);
-  temp.push(new NoiseBlock(font,[200,100],3))
+  temp.push(new NoiseBlock(font,[50,40],3));
+  temp.push(new GridifyBlock(font, 50));
+  addConnection(temp[1], temp[0]);
+
 }
 
 
 function draw() {
   background(col);
-  // temp[0].threeDMove();
-  // temp[0].output();
-  temp.forEach((block) => block.base.show())
+  temp[0].threeDMove();
+  // temp[0].dislpay();
+  temp[1].display();
+  temp.forEach((block) => {
+    block.base.show()
+  })
   
   
-  // noLoop()
+  noLoop()
   // console.log((int)(frameRate()))
   
 }
@@ -65,6 +72,14 @@ function mouseReleased(){
   })
 }
 
+function addConnection(input, output){
+  connections.push({
+    input: input.base.id,
+    output: output.base.id,
+  });
 
+  input.addInput(output);
+  output.addOutput(input);
+}
 //NOTE TO SELF: padding is included 
 //in mouse position not how to stop it other then manually

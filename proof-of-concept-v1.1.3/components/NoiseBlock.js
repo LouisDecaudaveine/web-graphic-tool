@@ -13,6 +13,7 @@ function NoiseBlock(font, resolution = [200,100], dimensions = 1 ,seed = -1) {
     this.position = (dimensions === 1) ? [0] : [0,0,0];
     this.defaultSpread = 0.1
     this.speed = 0.01;
+    this.outputs = [];
 
     noiseSeed(this.seed);
 
@@ -47,12 +48,20 @@ function NoiseBlock(font, resolution = [200,100], dimensions = 1 ,seed = -1) {
     this.threeDMove = () => {
         this.updateZ(this.speed);
         this.value = this.getNoise();
+        this.outputs.forEach((output) => output.updateCall(this.value))
+    }
+
+    this.addOutput = (input) => {
+        this.outputs.push({
+                    id: input.base.id,
+                    updateCall: (newData) => {input.updateInput(newData)},
+                });
     }
 
     //this is if you just want to visualise noise over your canvas
     //should not be used often, extremely innificient
     //noise should be used as data, sampled at relatively low rates. aka: low resolution
-    this.output = () => {
+    this.visualise = () => {
         let xResConv = this.resolution[0]/width;
         let yResConv = this.resolution[1]/height;
         loadPixels();
