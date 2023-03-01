@@ -24,7 +24,8 @@ function App() {
   return (
     <div className="App">
       <Editor />
-      <P5Wrapper />
+
+      <P5Wrapper script=""/>
     </div>
   );
 }

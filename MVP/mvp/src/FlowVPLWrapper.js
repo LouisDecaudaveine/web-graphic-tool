@@ -5,10 +5,12 @@ import ReactRenderPlugin from "rete-react-render-plugin";
 import ConnectionPlugin from "rete-connection-plugin";
 import AreaPlugin from "rete-area-plugin";
 import Context from "efficy-rete-context-menu-plugin";
+import NoiseComponent from "./reteComponents/NoiseComponent"
+import TextComponent from "./reteComponents/TextComponent";
 
 export async function createEditor(container) {
 
-    var components = [];
+    var components = [new NoiseComponent(), new TextComponent()];
 
     var editor = new Rete.NodeEditor("demo@0.1.0", container);
     editor.use(ConnectionPlugin);
@@ -23,7 +25,15 @@ export async function createEditor(container) {
         engine.register(c);
     });
 
-    //updates endgine when editor content is modified
+    var n1 = await components[0].createNode();
+    var n2 = await components[1].createNode();
+
+    n1.position = [50,50];
+    n2.position = [100,50];
+    editor.addNode(n1);
+    editor.addNode(n2);
+
+    //updates engine when editor content is modified
     //abort() is used when a process becomes impossible and is therefore stopped
     editor.on(
         "process nodecreated noderemoved connectioncreated connectionremoved",
@@ -40,6 +50,8 @@ export async function createEditor(container) {
     //this handles the map of the flow-vpl
     AreaPlugin.zoomAt(editor, editor.nodes);
     
+    console.log(editor.toJSON())
+
     return editor;
 }
 
