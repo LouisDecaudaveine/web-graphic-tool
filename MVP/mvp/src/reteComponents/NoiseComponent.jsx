@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import FloatController from "../reteControllers/FloatController";
+import NumController from "../reteControllers/NumController";
 import SocketList from "../SocketList";
 import Rete from "rete";
 
@@ -10,13 +10,17 @@ export default class NoiseComponent extends Rete.Component {
     }
 
     builder(node) {
-        var in1 = new Rete.Input("float", "Speed", SocketList.floatSocket, false);
-        in1.addControl(new FloatController(this.editor, "float", node))
-        var out1 = new Rete.Output("2DFloatArr", "Noise Array", SocketList.floatArray2DSocket, true)
-        return node.addInput(in1).addOutput(out1);
+        var in1 = new Rete.Input("float", "speedInp", SocketList.numSocket, false);
+        var dimCon = new NumController(this.editor, "dimensions", node, false, "Dimensions");
+        var seed = new NumController(this.editor, "seed", node, false, "Seed");
+        in1.addControl(new NumController(this.editor, "speed", node, true,"Speed"));
+        var out1 = new Rete.Output("noiseOutput", "Output", SocketList.floatArray2DSocket, true)
+        return node.addInput(in1).addControl(dimCon).addControl(seed).addOutput(out1);
     } 
 
-    worker() {
+    worker(node) {
         console.log("Noise component worked");
+
+        console.log(node.outputs["noiseOutput"])
     }
 }

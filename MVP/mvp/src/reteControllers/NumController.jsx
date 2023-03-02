@@ -1,30 +1,32 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Rete from "rete";
 
-export default class FloatController extends Rete.Control {
+export default class NumController extends Rete.Control {
+
 
     //I have no idea what is happening in that ref thing but it looks important
-    static component = ({value, onChange}) => (
+    static component = ({ value, onChange, isFloat, title }) => (
         <div>
-            {"Speed"}
+            {title !== "" && <span className="controllerTitle">{title}</span>}
             <input
-                type = "number"
-                step = "0.0001"
-                value = {value}
-                ref = {(ref) => {
+                type="number"
+                step={isFloat ? "0.00001" : "1"}
+                value={value}
+                ref={(ref) => {
                     ref && ref.addEventListener("pointerdown", (e) => e.stopPropagation());
                 }}
-                onChange = {(e) => onChange(+e.target.value)}
+                onChange={(e) => onChange(+e.target.value)}
             />
-        </div>  
+        </div>
     )
 
-    constructor(emitter, key, node, readonly = false){
+    constructor(emitter, key, node, isFloat, title = "", readonly = false) {
         super(key);
+        this.title = title;
         this.emitter = emitter;
         this.key = key;
-        this.component = FloatController.component;
-
+        this.isFloat = isFloat;
+        this.component = NumController.component;
         const initial = node.data[key] || 0;
 
         node.data[key] = initial;
@@ -34,7 +36,9 @@ export default class FloatController extends Rete.Control {
             onChange: (v) => {
                 this.setValue(v);
                 this.emitter.trigger("process");
-            }
+            },
+            isFloat,
+            title: this.title,
         };
     }
 
@@ -43,6 +47,4 @@ export default class FloatController extends Rete.Control {
         this.putData(this.key, val);
         this.update();
     }
-
-
 };
