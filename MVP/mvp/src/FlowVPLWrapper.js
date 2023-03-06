@@ -32,7 +32,12 @@ export async function createEditor(container) {
       dimensions: 2,
       seed: Math.round(Math.random()*10000),
     });
-    var n2 = await components[1].createNode();
+    var n2 = await components[1].createNode({
+      xPos: 50, 
+      yPos: 100,
+      size: 12,
+    });
+
     var n3 = await components[2].createNode({
       width: 30,
       height: 50,
@@ -76,15 +81,25 @@ export async function createEditor(container) {
 }
 
 
-export function useRete() {
+export function useRete(props) {
     const [container, setContainer] = useState(null);
+    const [getEditorCallBack, setGetEditorCallBack] = useState(null);
+    const [setEditorCallBack, setSetEditorCallBack] = useState(null);
     const editorRef = useRef();
-  
+
     useEffect(() => {
       if (container) {
-        createEditor(container).then((value) => {
+          createEditor(container).then((value) => {
           console.log("created");
           editorRef.current = value;
+        })
+        .then(() => {
+          setGetEditorCallBack(() => {
+            console.log("yoyo");
+          })
+          // setSetEditorCallBack(async (data) => {
+          //   await editorRef.fromJSON(data);
+          // })
         });
       }
     }, [container]);
@@ -98,5 +113,5 @@ export function useRete() {
       };
     }, []);
   
-    return [setContainer];
+    return [setContainer, setGetEditorCallBack, setSetEditorCallBack];
   }
