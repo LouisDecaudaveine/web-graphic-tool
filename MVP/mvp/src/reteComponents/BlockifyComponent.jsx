@@ -8,10 +8,10 @@ export default class BlockifyComponent extends Rete.Component {
     }
 
     builder(node) {
-        var widthCon = new NumController(this.editor, "width", node, false, "width");
-        var heightCon = new NumController(this.editor, "height", node, false, "height");
+        var size = new NumController(this.editor, "blockSize", node, false, "Block Size");
         var inputData = new Rete.Input("2DFloatArr", "Input Matrix", SocketList.floatArray2DSocket, false);
-        return node.addInput(inputData).addControl(widthCon).addControl(heightCon);
+        var outputVisData = new Rete.Output("outputVisData", "output", SocketList.VisualSocket, false);
+        return node.addInput(inputData).addControl(size).addOutput(outputVisData);
     }
 
     worker() {

@@ -9,13 +9,14 @@ import NoiseComponent from "./reteComponents/NoiseComponent"
 import TextComponent from "./reteComponents/TextComponent";
 import BlockifyComponent from "./reteComponents/BlockifyComponent";
 import ListComponent from "./reteComponents/ListComponent";
+import SketchComponent from "./reteComponents/SketchComponent";
 
 export async function createEditor(container) {
 
-    var components = [new NoiseComponent(), new TextComponent(), new BlockifyComponent(), new ListComponent()];
+    var components = [new NoiseComponent(), new TextComponent(), new BlockifyComponent(), new ListComponent(), new SketchComponent()];
 
     var editor = new Rete.NodeEditor("demo@0.1.0", container);
-    editor.use(ConnectionPlugin);
+    editor.use(ConnectionPlugin);new SketchComponent()
     editor.use(ReactRenderPlugin, { createRoot });
     editor.use(Context);
 
@@ -27,31 +28,37 @@ export async function createEditor(container) {
         engine.register(c);
     });
 
-    var n1 = await components[0].createNode({
-      speed: 0.01,
-      dimensions: 2,
-      seed: Math.round(Math.random()*10000),
-    });
-    var n2 = await components[1].createNode({
-      xPos: 50, 
-      yPos: 100,
-      size: 12,
+    // var n1 = await components[0].createNode({
+    //   speed: 0.01,
+    //   dimensions: 2,
+    //   seed: Math.round(Math.random()*10000),
+    // });
+    // var n2 = await components[1].createNode({
+    //   xPos: 50, 
+    //   yPos: 100,
+    //   size: 12,
+    // });
+
+    // var n3 = await components[2].createNode({
+    //   width: 30,
+    //   height: 50,
+    // });
+    // var n4 = await components[3].createNode();
+    var n5 = await components[4].createNode({
+      width : 500,
+      height: 500,
     });
 
-    var n3 = await components[2].createNode({
-      width: 30,
-      height: 50,
-    });
-    var n4 = await components[3].createNode();
-
-    n1.position = [50,50];
-    n2.position = [100,50];
-    n3.position = [300,50];
-    n4.position = [-100,50];
-    editor.addNode(n1);
-    editor.addNode(n2);
-    editor.addNode(n3);
-    editor.addNode(n4);
+    // n1.position = [50,50];
+    // n2.position = [100,50];
+    // n3.position = [300,50];
+    // n4.position = [-100,50];
+    n5.position = [-300,50];
+    // editor.addNode(n1);
+    // editor.addNode(n2);
+    // editor.addNode(n3);
+    // editor.addNode(n4);
+    editor.addNode(n5);
 
     //updates engine when editor content is modified
     //abort() is used when a process becomes impossible and is therefore stopped
@@ -64,6 +71,12 @@ export async function createEditor(container) {
         }
       );
 
+
+    //this is half of the solution to make sure that only 1 sketch component is possible
+    editor.on('showcontextmenu', ({ node }) => {
+      return !node || !editor.components.get(node.name).data.noContextMenu;
+    });
+    
     //this gets rid of double click zoom that is not needed
     editor.on('zoom', ({ source }) => {
       return source !== 'dblclick';
@@ -89,6 +102,10 @@ export function useRete(props) {
 
     const getEditor = () => {
       return editorRef.current.toJSON();
+    }
+
+    const updateEditor = async (updatedEditor) => {
+      await editorRef.current.fromJSON(updateEditor);
     }
 
     useEffect(() => {

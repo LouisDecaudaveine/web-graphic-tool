@@ -13,6 +13,6 @@ export default class ListComponent extends Rete.Component {
     }
 
     worker(node){
-        console.log(node.inputs)
+        // console.log(node.inputs)
     }
 }

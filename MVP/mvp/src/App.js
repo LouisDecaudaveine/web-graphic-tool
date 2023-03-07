@@ -22,7 +22,7 @@ function Editor(props){
       <button
       onClick={ () =>{
         props.getSerializedData(getEditor());
-      }}>Save Me</button>
+      }}>Save Editor</button>
     </div>
     
   )
@@ -30,10 +30,12 @@ function Editor(props){
 
 
 function App() {
-  const [currentSerialized, setCurrentSerialized] = useState({});
-  
+  // I want this to be the state of App but wasnt working.
+  let serializedEditor = {};
+
   const getSerialisedParentHandler = (serializedData) => {
-    setCurrentSerialized(serializedData);
+    serializedEditor = JSON.parse(JSON.stringify(serializedData));
+    console.log("Saved VPE", serializedEditor);
   }
 
   //Currently I am building nodes and connections within createEditor()
@@ -43,7 +45,7 @@ function App() {
   return (
     <div className="App">
       <Editor getSerializedData={getSerialisedParentHandler}/>
-      <P5Wrapper VPLState={currentSerialized} />
+      <P5Wrapper VPLState={serializedEditor} width={700} height ={500}/>
     </div>
   );
 }
