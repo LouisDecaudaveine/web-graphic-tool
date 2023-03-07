@@ -87,20 +87,16 @@ export function useRete(props) {
     const [setEditorCallBack, setSetEditorCallBack] = useState(null);
     const editorRef = useRef();
 
+    const getEditor = () => {
+      return editorRef.current.toJSON();
+    }
+
     useEffect(() => {
       if (container) {
           createEditor(container).then((value) => {
           console.log("created");
           editorRef.current = value;
         })
-        .then(() => {
-          setGetEditorCallBack(() => {
-            console.log("yoyo");
-          })
-          // setSetEditorCallBack(async (data) => {
-          //   await editorRef.fromJSON(data);
-          // })
-        });
       }
     }, [container]);
   
@@ -113,5 +109,5 @@ export function useRete(props) {
       };
     }, []);
   
-    return [setContainer, setGetEditorCallBack, setSetEditorCallBack];
+    return [setContainer,getEditor];
   }
