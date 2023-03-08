@@ -24,18 +24,18 @@ function Editor(props){
         props.getSerializedData(getEditor());
       }}>Save Editor</button>
     </div>
-    
   )
 }
 
 
 function App() {
   // I want this to be the state of App but wasnt working.
-  let serializedEditor = {};
+  const [serialisedData, setSerialisedData] = useState({});
 
-  const getSerialisedParentHandler = (serializedData) => {
-    serializedEditor = JSON.parse(JSON.stringify(serializedData));
-    console.log("Saved VPE", serializedEditor);
+  const getSerialisedParentHandler = (se) => {
+    // serializedEditor = JSON.parse(JSON.stringify(se));
+    setSerialisedData(se);
+    console.log("Saved VPE", serialisedData);
   }
 
   //Currently I am building nodes and connections within createEditor()
@@ -45,7 +45,14 @@ function App() {
   return (
     <div className="App">
       <Editor getSerializedData={getSerialisedParentHandler}/>
-      <P5Wrapper VPLState={serializedEditor} width={700} height ={500}/>
+
+      {
+        serialisedData.nodes && 
+        serialisedData.nodes["1"] && 
+        serialisedData.nodes["1"].name === "Sketch" && 
+        <P5Wrapper VPLState={serialisedData} width={serialisedData.nodes["1"].data.width} height ={serialisedData.nodes["1"].data.height}/>
+      }
+
     </div>
   );
 }
