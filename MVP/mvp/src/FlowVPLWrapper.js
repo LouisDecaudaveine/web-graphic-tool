@@ -96,16 +96,17 @@ export async function createEditor(container) {
 
 export function useRete(props) {
     const [container, setContainer] = useState(null);
-    const [getEditorCallBack, setGetEditorCallBack] = useState(null);
-    const [setEditorCallBack, setSetEditorCallBack] = useState(null);
     const editorRef = useRef();
 
     const getEditor = () => {
       return editorRef.current.toJSON();
     }
 
-    const updateEditor = async (updatedEditor) => {
-      await editorRef.current.fromJSON(updateEditor);
+
+    const setEditor = async (newEditor) => {
+      console.log("now in the VPL wrapper before await");
+      await editorRef.current.fromJSON(newEditor);
+      console.log("after await");
     }
 
     useEffect(() => {
@@ -126,5 +127,5 @@ export function useRete(props) {
       };
     }, []);
   
-    return [setContainer,getEditor];
+    return [setContainer,getEditor, setEditor];
   }
