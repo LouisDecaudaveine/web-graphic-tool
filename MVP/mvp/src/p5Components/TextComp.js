@@ -41,7 +41,6 @@ export default function TextComp(VPLNode){
     }
 
     this.update = (inputs) => {
-        // console.log(this.bBox);
         this.bBox =  this.font && this.font.textBounds(this.content,this.posX,this.posY,this.size);
 
         //updating the VPL data

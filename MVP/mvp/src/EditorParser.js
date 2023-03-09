@@ -40,6 +40,7 @@ export function ReadParser(SerialisedEditor) {
     //first checking if editor exist
     //then going to inputs of sketch Node
     //checking if node already exists if not adding it to objects
+
     SerialisedEditor.nodes && 
         SerialisedEditor.nodes["1"].data.layers
         .forEach((visComp) => {

@@ -101,7 +101,7 @@ export default (props) => {
 				p5.mouseX < layer.bBox.x + layer.bBox.w &&
 				p5.mouseY > layer.bBox.y && 
 				p5.mouseY < layer.bBox.y + layer.bBox.h){
-					console.log(layer.content);
+					
 					layer.anchorPoint = {
 						x: Math.floor(p5.mouseX),
 						y: Math.floor(p5.mouseY)
@@ -116,7 +116,11 @@ export default (props) => {
 
 	const mouseDragged = (p5) => {
 		layers.every((layer) => {
-			if(layer.anchored) move(layer,p5.mouseX,p5.mouseY);
+			if(layer.anchored) {
+				move(layer,p5.mouseX,p5.mouseY);
+				return false;
+			}
+			return true;
 		})
 
 	}
