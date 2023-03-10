@@ -10,10 +10,11 @@ import TextComponent from "./reteComponents/TextComponent";
 import BlockifyComponent from "./reteComponents/BlockifyComponent";
 import ListComponent from "./reteComponents/ListComponent";
 import SketchComponent from "./reteComponents/SketchComponent";
+import EndlessTest from "./reteComponents/EndlessTest";
 
 export async function createEditor(container) {
 
-    var components = [new NoiseComponent(), new TextComponent(), new BlockifyComponent(), new ListComponent(), new SketchComponent()];
+    var components = [new NoiseComponent(), new TextComponent(), new BlockifyComponent(), new ListComponent(), new SketchComponent(), new EndlessTest()];
 
     var editor = new Rete.NodeEditor("demo@0.1.0", container);
     editor.use(ConnectionPlugin);new SketchComponent()

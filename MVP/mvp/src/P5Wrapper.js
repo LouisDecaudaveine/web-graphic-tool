@@ -43,8 +43,10 @@ export default (props) => {
 		let xDiff = Math.floor(mouseX - obj.anchorPoint.x);
 		let yDiff = Math.floor(mouseY - obj.anchorPoint.y);
 
-		obj.posX += xDiff;
-		obj.posY += yDiff;
+		if(obj.posX)
+			obj.posX += xDiff;
+		if(obj.posY)
+			obj.posY += yDiff;
 
 		obj.anchorPoint = {x: mouseX, y: mouseY};
 	}

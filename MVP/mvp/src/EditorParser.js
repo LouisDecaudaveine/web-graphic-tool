@@ -23,7 +23,37 @@ function EllipseObj(xPos, yPos){
     }
 } 
 
-function treeDescent(SerialisedEditor){
+
+function recursiveHelper(SE, obj, visited, layers, objects){
+    obj.inputs && 
+        Object.entries(obj.inputs).forEach((socket) => {
+            console.log(socket[0],socket[1].connections);
+            socket[1].connections.forEach((child) => {
+                let curr = SE.nodes[child.node];
+                console.log("yooooo", curr.name);
+                recursiveHelper(SE, curr, visited, layers, objects);
+            });
+        })
+}
+
+function treeDescent(SE){
+
+    let visitedComponents = new Map();
+
+    //for every comp in SE.nodes[1].data.layers: 
+        // add to visitedComponents: [comp.node, true]
+        // init the appropriate component and add to objects and layers:
+            // const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
+            // const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp)
+            // objects.push(p5Comp);
+            // layers.push(p5Comp);
+        //for obj in objects:
+            //recursiveFunc(obj, layers, objects, visited):
+                //for inp in SE.nodes[obj.id].inputs
+                //if visited: 
+                    //undecided
+                //else: build correct obj like above ^^^ and add to visited
+
     // this will go down the VPL tree starting at Sketch node inputs
     // following a depth first search pattern, 
     // on its way down it will either create the necessary objects
@@ -46,6 +76,7 @@ export function ReadParser(SerialisedEditor) {
         .forEach((visComp) => {
            if(!objects.some((obj) => obj.id === visComp.node)){
                 const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
+                recursiveHelper(SerialisedEditor, VPLcomp, null, layers, objects);
                 const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp)
                 objects.push(p5Comp);
                 layers.push(p5Comp);

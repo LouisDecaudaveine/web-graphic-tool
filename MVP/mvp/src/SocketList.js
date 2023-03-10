@@ -6,6 +6,7 @@ const SocketList =  {
     textSocket : new Rete.Socket("String value"),
     coordArray : new Rete.Socket("Array of coordinates"),
     layerSocket : new Rete.Socket("Array of visual compoents"), 
+    testSocket: new Rete.Socket("Purely for testing the ,erialised Parser"),
     ListSocket: new Rete.Socket("Any Type that fits in a list"),
     VisualSocket: new Rete.Socket("Any Type of input that has a visual representation"),
 }
