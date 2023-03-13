@@ -20,7 +20,6 @@ export default class TextComponent extends Rete.Component {
     }
 
     worker() {
-        console.log("Text component is doing bits");
     }
 }
 

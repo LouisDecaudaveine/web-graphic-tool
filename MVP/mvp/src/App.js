@@ -22,8 +22,8 @@ function Editor(props){
     <div>
       <div 
         style = {{
-          width: "50vw",
-          height: "50vh",
+          width: "75vw",
+          height: "75vh",
           border: "solid black 2px",
           margin: "auto",
         }}>

@@ -11,10 +11,23 @@ import BlockifyComponent from "./reteComponents/BlockifyComponent";
 import ListComponent from "./reteComponents/ListComponent";
 import SketchComponent from "./reteComponents/SketchComponent";
 import EndlessTest from "./reteComponents/EndlessTest";
+import ColourFilterComponent from "./reteComponents/ColourFilter";
+import RectangleComponent from "./reteComponents/RectangleComponent";
+import EllipseComponent from "./reteComponents/EllipseComponent";
+import ColourComponent from "./reteComponents/ColourComponent";
 
 export async function createEditor(container) {
 
-    var components = [new NoiseComponent(), new TextComponent(), new BlockifyComponent(), new ListComponent(), new SketchComponent(), new EndlessTest()];
+    var components = [
+       new SketchComponent(),
+       new NoiseComponent(),
+       new TextComponent(), 
+       new BlockifyComponent(),  
+       new EndlessTest(),
+       new ColourFilterComponent(),
+       new RectangleComponent(),
+       new EllipseComponent(),
+       new ColourComponent(),];
 
     var editor = new Rete.NodeEditor("demo@0.1.0", container);
     editor.use(ConnectionPlugin);new SketchComponent()
@@ -45,7 +58,7 @@ export async function createEditor(container) {
     //   height: 50,
     // });
     // var n4 = await components[3].createNode();
-    var n5 = await components[4].createNode({
+    var n5 = await components[0].createNode({
       width : 500,
       height: 500,
     });

@@ -2,7 +2,9 @@ import Rete from "rete";
 
 const SocketList =  {
     numSocket : new Rete.Socket("Float Value"),
+    colourSocket: new Rete.Socket("colour socket"),
     floatArray2DSocket : new Rete.Socket("2D Float Array"),
+    colourArray2DSocket : new Rete.Socket("2D Colour Array"),
     textSocket : new Rete.Socket("String value"),
     coordArray : new Rete.Socket("Array of coordinates"),
     layerSocket : new Rete.Socket("Array of visual compoents"), 
