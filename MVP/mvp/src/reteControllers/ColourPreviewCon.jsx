@@ -25,7 +25,7 @@ export default class ColourPreviewCon extends Rete.Control {
         this.hexVal = hexVal;
         this.component = ColourPreviewCon.component;
         
-        const initial = node.data[key] || "0000ff";
+        const initial = node.data[key] || "000000";
         node.data[key] = initial;
         this.props = {
             value: initial

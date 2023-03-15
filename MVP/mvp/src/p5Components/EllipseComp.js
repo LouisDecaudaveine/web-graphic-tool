@@ -1,4 +1,4 @@
-import PrimitiveGeo from "../p5BaseComps/p5PrimitiveGeo";
+import PrimitiveGeo from "../p5BaseComps/p5ProtoGeo";
 
 export default function RectangleComp(VPLNode) {
     PrimitiveGeo.call(this, VPLNode);

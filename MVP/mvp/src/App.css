@@ -6,3 +6,27 @@
   padding-right: 3px;
   color: white;
 }
+
+.websiteTitle {
+  color: #DF7857;
+}
+
+.navigator {
+  display: inline;
+  margin: auto;
+}
+
+.navItem {
+  display: inline;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  margin-bottom: 3rem;
+  color: #d8643e;
+}
+
+.header {
+  padding:1rem;
+  background-color: #617143;
+  /* background-image: linear-gradient(#033549,#034056); */
+  /* background-image: linear-gradient(#570718,#034056 );  */
+}

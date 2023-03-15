@@ -72,7 +72,7 @@ export function ReadParser(SerialisedEditor) {
     //checking if node already exists if not adding it to objects
 
     SerialisedEditor.nodes && 
-        SerialisedEditor.nodes["1"].data.layers
+        SerialisedEditor.nodes[Math.min(Object.keys(SerialisedEditor.nodes)).toString()].data.layers
         .forEach((visComp) => {
            if(!objects.some((obj) => obj.id === visComp.node)){
                 const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];

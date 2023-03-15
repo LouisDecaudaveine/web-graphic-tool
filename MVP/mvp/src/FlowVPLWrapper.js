@@ -59,8 +59,8 @@ export async function createEditor(container) {
     // });
     // var n4 = await components[3].createNode();
     var n5 = await components[0].createNode({
-      width : 500,
-      height: 500,
+      width : 800,
+      height: 1000,
     });
 
     // n1.position = [50,50];
