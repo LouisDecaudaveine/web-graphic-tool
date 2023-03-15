@@ -11,7 +11,7 @@ export default (props) => {
 	const editedVPL = JSON.parse(JSON.stringify(props.VPLState)); 
 	//objects: these are all the nodes that you can see on the vpl 
 	//layers: is a list of all the visual component they are rendered from lowest index to highest index
-	const [objects,layers] = ReadParser(props.VPLState);
+	const [objects,layers] = ReadParser(props.VPLState, props.sketchNodeIndex);
 
 	let needsResizing = false
 	//this queues a resize of canvas whenever the sketch VPL component changes its dimensions

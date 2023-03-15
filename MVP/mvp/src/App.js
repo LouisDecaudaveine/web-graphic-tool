@@ -53,8 +53,8 @@ const Home = () => {
   const [editedSerialised, setEditedSerialised] = useState();
 
   const getSerialisedParentHandler = (se) => {
-    // serializedEditor = JSON.parse(JSON.stringify(se));
     setSerialisedData(se);
+
     console.log("Saved VPE", serialisedData);
   }
 
@@ -62,22 +62,29 @@ const Home = () => {
     setEditedSerialised(jsonData);
   } 
 
+  //this checks if the editor has been inited
+  //then makes a list of numbers of the nodes keys
+  //finds the smallest which represents the sketch component
+  //WARNING: Sketch must always be the first constructed node for this to work
+
+  
   return(
     <div className='App'>
       <Editor getSerializedData={getSerialisedParentHandler} editedSerialised={editedSerialised}/>
       {
-      serialisedData.nodes && 
-      Object.keys(serialisedData.nodes).length > 0 &&
-      console.log(serialisedData.nodes[Math.min(Object.keys(serialisedData.nodes)).toString()].data.width)
+        serialisedData.nodes && 
+        Object.keys(serialisedData.nodes).length > 0 &&
+        console.log(Math.min(Math.min(...Object.keys(serialisedData.nodes).map(Number))).toString())
       }
       {
         serialisedData.nodes && 
         Object.keys(serialisedData.nodes).length > 0 &&
-        serialisedData.nodes[Math.min(Object.keys(serialisedData.nodes)).toString()].name === "Sketch" && 
+        serialisedData.nodes[Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].name === "Sketch" && 
         <P5Wrapper VPLState={serialisedData} 
-          width={serialisedData.nodes[Math.min(Object.keys(serialisedData.nodes)).toString()].data.width} 
-          height ={serialisedData.nodes[Math.min(Object.keys(serialisedData.nodes)).toString()].data.height}
-          editedSerialisedHandler={setEditedParentHandler}/>
+          width={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.width} 
+          height ={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.height}
+          editedSerialisedHandler={setEditedParentHandler}
+          sketchNodeIndex={Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()}/>
       }
 
     </div>

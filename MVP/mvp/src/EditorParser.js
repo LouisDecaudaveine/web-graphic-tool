@@ -61,7 +61,7 @@ function treeDescent(SE){
 }
 
 
-export function ReadParser(SerialisedEditor) {
+export function ReadParser(SerialisedEditor, sketchIndex) {
     // const ellipseO = new EllipseObj(250,250);
 
     const objects = [];
@@ -72,8 +72,9 @@ export function ReadParser(SerialisedEditor) {
     //checking if node already exists if not adding it to objects
 
     SerialisedEditor.nodes && 
-        SerialisedEditor.nodes[Math.min(Object.keys(SerialisedEditor.nodes)).toString()].data.layers
+        SerialisedEditor.nodes[sketchIndex].data.layers
         .forEach((visComp) => {
+            console.log(sketchIndex);
            if(!objects.some((obj) => obj.id === visComp.node)){
                 const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
                 recursiveHelper(SerialisedEditor, VPLcomp, null, layers, objects);
