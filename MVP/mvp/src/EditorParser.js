@@ -1,27 +1,6 @@
 //import p5 classes/objects not sure how they will be made
+import ObjCompProto from "./p5BaseComps/p5protoObj";
 import p5ComponentList from "./p5ComponentList";
-
-
-//this is just a demo function will delete later
-function EllipseObj(xPos, yPos){   
-    this.id = -1;
-    this.x = xPos;
-    this.y = yPos;
-    this.bassX = xPos;
-    this.bassY = yPos;
-    this.state = 0;
-
-    this.show = (p5) => {
-        p5.fill(255,0,0);
-        p5.ellipse(this.x,this.y, 70,70);
-    }
-
-    this.update = (inputs) => {
-        this.state += 0.01;
-        this.x = this.bassX + Math.sin(this.state)*50;
-        this.y = this.bassY + Math.cos(this.state)*50;
-    }
-} 
 
 
 function recursiveHelper(SE, obj, visited, layers, objects){
@@ -30,7 +9,6 @@ function recursiveHelper(SE, obj, visited, layers, objects){
             console.log(socket[0],socket[1].connections);
             socket[1].connections.forEach((child) => {
                 let curr = SE.nodes[child.node];
-                console.log("yooooo", curr.name);
                 recursiveHelper(SE, curr, visited, layers, objects);
             });
         })
@@ -61,12 +39,62 @@ function treeDescent(SE){
 }
 
 
+function initHelper(objs, SerialisedEditor, VPLcomp, parent, parentSoc) {
+    let currP5Comp;
+    if(!objs.has(VPLcomp.id)){
+        currP5Comp = new ObjCompProto(VPLcomp);
+        objs.set(VPLcomp.id, currP5Comp);
+    }
+    else currP5Comp = objs.get(VPLcomp.id);
+    parent.addInput({socket: parentSoc, component: currP5Comp});
+
+    if(JSON.stringify(VPLcomp.inputs) !== "{}"){
+        Object.entries(VPLcomp.inputs).forEach((socket) => {
+            socket[1].connections.forEach((con) =>{
+                const currVPLComp = SerialisedEditor.nodes[con.node];
+                initHelper(objs, SerialisedEditor,currVPLComp, currP5Comp, socket[0]);
+            })
+        });  
+    }
+}
+
+
+function initObjs(SerialisedEditor, sketchIndex){
+
+    //under the form [["2", <object>],["13", <object>]]
+    const objs = new Map();
+    SerialisedEditor.nodes &&
+        SerialisedEditor.nodes[sketchIndex].data.layers
+        .forEach((visComp) => {
+            const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
+            const p5Comp = new ObjCompProto(VPLcomp);
+            objs.set(visComp.node, p5Comp, p5Comp);
+
+            if(JSON.stringify(VPLcomp.inputs) !== "{}"){
+                Object.entries(VPLcomp.inputs).forEach((socket) => {
+                    socket[1].connections.forEach((con) =>{
+                        const currVPLComp = SerialisedEditor.nodes[con.node];
+                        initHelper(objs, SerialisedEditor,currVPLComp, p5Comp, socket[0]);
+                    })
+                });  
+            }
+
+        });
+    
+    console.log(objs);
+}
+
+
+
+
+
 export function ReadParser(SerialisedEditor, sketchIndex) {
     // const ellipseO = new EllipseObj(250,250);
 
     const objects = [];
     const layers = [];
 
+    initObjs(SerialisedEditor, sketchIndex);
     //first checking if editor exist
     //then going to inputs of sketch Node
     //checking if node already exists if not adding it to objects
@@ -74,7 +102,6 @@ export function ReadParser(SerialisedEditor, sketchIndex) {
     SerialisedEditor.nodes && 
         SerialisedEditor.nodes[sketchIndex].data.layers
         .forEach((visComp) => {
-            console.log(sketchIndex);
            if(!objects.some((obj) => obj.id === visComp.node)){
                 const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
                 recursiveHelper(SerialisedEditor, VPLcomp, null, layers, objects);

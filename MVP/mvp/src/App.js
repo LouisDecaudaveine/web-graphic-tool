@@ -62,11 +62,6 @@ const Home = () => {
     setEditedSerialised(jsonData);
   } 
 
-  //this checks if the editor has been inited
-  //then makes a list of numbers of the nodes keys
-  //finds the smallest which represents the sketch component
-  //WARNING: Sketch must always be the first constructed node for this to work
-
   
   return(
     <div className='App'>

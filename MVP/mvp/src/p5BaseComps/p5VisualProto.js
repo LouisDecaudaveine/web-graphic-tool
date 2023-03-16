@@ -1,5 +1,4 @@
 export default function VisualCompProto(VPLNode) {
-    console.log(VPLNode);
     //all the data present in any visual VPL component
     this.id = VPLNode.id;
     this.posX = VPLNode.data.xPos;
