@@ -83,8 +83,9 @@ export default (props) => {
 
 		p5.background(0);
 
-		objects.forEach(element => {
-			element.update();
+		layers.forEach((element) => {
+			const update = element.updatePromise(p5.frameCount);
+			update()
 		});
 
 		layers.forEach(layer => {

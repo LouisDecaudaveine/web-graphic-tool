@@ -59,16 +59,18 @@ function initHelper(objs, SerialisedEditor, VPLcomp, parent, parentSoc) {
 }
 
 
-function initObjs(SerialisedEditor, sketchIndex){
+export function ReadParser(SerialisedEditor, sketchIndex){
 
     //under the form [["2", <object>],["13", <object>]]
     const objs = new Map();
+    const layers = [];
     SerialisedEditor.nodes &&
         SerialisedEditor.nodes[sketchIndex].data.layers
         .forEach((visComp) => {
             const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
-            const p5Comp = new ObjCompProto(VPLcomp);
-            objs.set(visComp.node, p5Comp, p5Comp);
+            const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp)
+            objs.set(visComp.node, p5Comp);
+            layers.push(p5Comp);
 
             if(JSON.stringify(VPLcomp.inputs) !== "{}"){
                 Object.entries(VPLcomp.inputs).forEach((socket) => {
@@ -81,35 +83,35 @@ function initObjs(SerialisedEditor, sketchIndex){
 
         });
     
-    console.log(objs);
+    return [objs, layers]
 }
 
 
 
 
 
-export function ReadParser(SerialisedEditor, sketchIndex) {
-    // const ellipseO = new EllipseObj(250,250);
+// export function ReadParser(SerialisedEditor, sketchIndex) {
+//     // const ellipseO = new EllipseObj(250,250);
 
-    const objects = [];
-    const layers = [];
+//     const objects = [];
+//     const layers = [];
 
-    initObjs(SerialisedEditor, sketchIndex);
-    //first checking if editor exist
-    //then going to inputs of sketch Node
-    //checking if node already exists if not adding it to objects
+//     initObjs(SerialisedEditor, sketchIndex);
+//     //first checking if editor exist
+//     //then going to inputs of sketch Node
+//     //checking if node already exists if not adding it to objects
 
-    SerialisedEditor.nodes && 
-        SerialisedEditor.nodes[sketchIndex].data.layers
-        .forEach((visComp) => {
-           if(!objects.some((obj) => obj.id === visComp.node)){
-                const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
-                recursiveHelper(SerialisedEditor, VPLcomp, null, layers, objects);
-                const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp)
-                objects.push(p5Comp);
-                layers.push(p5Comp);
-           }
-        }); 
+//     SerialisedEditor.nodes && 
+//         SerialisedEditor.nodes[sketchIndex].data.layers
+//         .forEach((visComp) => {
+//            if(!objects.some((obj) => obj.id === visComp.node)){
+//                 const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
+//                 recursiveHelper(SerialisedEditor, VPLcomp, null, layers, objects);
+//                 const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp)
+//                 objects.push(p5Comp);
+//                 layers.push(p5Comp);
+//            }
+//         }); 
 
-    return [objects, layers];
-}
+//     return [objects, layers];
+// }

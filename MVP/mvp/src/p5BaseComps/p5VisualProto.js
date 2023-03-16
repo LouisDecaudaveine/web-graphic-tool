@@ -1,6 +1,11 @@
+import ObjCompProto from "./p5protoObj";
+
 export default function VisualCompProto(VPLNode) {
+
+    ObjCompProto.call(this, VPLNode);
+
+
     //all the data present in any visual VPL component
-    this.id = VPLNode.id;
     this.posX = VPLNode.data.xPos;
     this.posY = VPLNode.data.yPos;
     this.type = "";
@@ -15,8 +20,6 @@ export default function VisualCompProto(VPLNode) {
     this.anchored = false;
     this.anchorPoint = {x: null, y: null};
     this.bBox = {x:null, y:null, w:null, h:null};
-
-    this.inputs = {};
 
     this.show = (p5) => {
         //bBoxVisualised

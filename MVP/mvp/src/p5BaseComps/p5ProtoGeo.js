@@ -9,12 +9,10 @@ export default function PrimitiveGeo(VPLNode){
     this.updatedSerialised.width = this.width;
     this.updatedSerialised.height = this.height;
 
-    this.inputs.colour = null;
-    this.col = this.inputs.colour !== null ? this.inputs.colour : {r:255,g:0,b:0}
-
+    this.col = this.inputs.has("colour") ? {r:0,g:255,b:0} : {r:255,g:0,b:0}
     this.bBox = {x: this.posX, y: this.posY, w: this.width, h: this.height};
 
-    this.update = (inputs) => {
+    this.update = () => {
         this.bBox = {x: this.posX, y: this.posY, w: this.width, h: this.height};
 
 
@@ -24,5 +22,8 @@ export default function PrimitiveGeo(VPLNode){
             width: this.width,
             height: this.height
         }
+
+        this.col = this.inputs.has("colour") ? {r:0,g:255,b:0} : {r:255,g:0,b:0}
+
     };
 }

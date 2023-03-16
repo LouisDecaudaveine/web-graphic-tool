@@ -69,11 +69,6 @@ const Home = () => {
       {
         serialisedData.nodes && 
         Object.keys(serialisedData.nodes).length > 0 &&
-        console.log(Math.min(Math.min(...Object.keys(serialisedData.nodes).map(Number))).toString())
-      }
-      {
-        serialisedData.nodes && 
-        Object.keys(serialisedData.nodes).length > 0 &&
         serialisedData.nodes[Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].name === "Sketch" && 
         <P5Wrapper VPLState={serialisedData} 
           width={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.width} 
