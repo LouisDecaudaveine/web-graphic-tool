@@ -99,7 +99,7 @@ export default (props) => {
 		if(p5.mouseX < p5.width && p5.mouseX >= 0  && p5.mouseY < p5.height && p5.mouseY >= 0){
 			startedInCanvas = true;
 		}
-		layers.every((layer) => {
+		layers.reverse().every((layer) => {
 			if(p5.mouseX > layer.bBox.x &&
 				p5.mouseX < layer.bBox.x + layer.bBox.w &&
 				p5.mouseY > layer.bBox.y && 
@@ -118,7 +118,7 @@ export default (props) => {
 	} 
 
 	const mouseDragged = (p5) => {
-		layers.every((layer) => {
+		layers.reverse().every((layer) => {
 			if(layer.anchored) {
 				move(layer,p5.mouseX,p5.mouseY);
 				return false;
@@ -130,7 +130,7 @@ export default (props) => {
 
 	const mouseReleased = (p5) => {
 		if(startedInCanvas){
-			layers.forEach((layer) => {
+			layers.reverse().forEach((layer) => {
 				if(layer.anchored){
 					setSerialisedLayer(layer);
 					layer.anchored = false;

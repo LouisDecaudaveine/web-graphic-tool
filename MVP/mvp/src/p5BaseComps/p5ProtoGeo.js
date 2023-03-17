@@ -12,7 +12,7 @@ export default function PrimitiveGeo(VPLNode){
     this.col = this.inputs.has("colour") ? {r:0,g:255,b:0} : {r:255,g:0,b:0}
     this.bBox = {x: this.posX, y: this.posY, w: this.width, h: this.height};
 
-    this.update = () => {
+    this.updateFunc = async () => {
         this.bBox = {x: this.posX, y: this.posY, w: this.width, h: this.height};
 
 
@@ -23,7 +23,7 @@ export default function PrimitiveGeo(VPLNode){
             height: this.height
         }
 
-        this.col = this.inputs.has("colour") ? {r:0,g:255,b:0} : {r:255,g:0,b:0}
+        if(this.inputs.has("colour")) this.col = this.inputs.get("colour")[0].outData.colour;   
 
     };
 }

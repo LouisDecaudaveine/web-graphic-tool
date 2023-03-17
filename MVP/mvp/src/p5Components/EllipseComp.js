@@ -1,6 +1,6 @@
 import PrimitiveGeo from "../p5BaseComps/p5ProtoGeo";
 
-export default function RectangleComp(VPLNode) {
+export default function EllipseComp(VPLNode) {
     PrimitiveGeo.call(this, VPLNode);
 
     this.show = (p5) => {

@@ -17,4 +17,7 @@ export default class EllipseComponent extends Rete.Component {
 
         return node.addInput(inputColour).addControl(width).addControl(height).addControl(x).addControl(y).addOutput(outputVisData);
     }
+
+    worker(node) {
+    }
 }

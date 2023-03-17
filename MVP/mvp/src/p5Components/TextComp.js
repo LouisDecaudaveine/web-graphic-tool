@@ -31,7 +31,7 @@ export default function TextComp(VPLNode){
         p5.pop();
     }
 
-    this.update = (inputs) => {
+    this.updateFunc = async () => {
         this.bBox =  this.font && this.font.textBounds(this.content,this.posX,this.posY,this.size);
 
         //updating the VPL data

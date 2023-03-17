@@ -11,7 +11,6 @@ import BlockifyComponent from "./reteComponents/BlockifyComponent";
 import ListComponent from "./reteComponents/ListComponent";
 import SketchComponent from "./reteComponents/SketchComponent";
 import EndlessTest from "./reteComponents/EndlessTest";
-import ColourFilterComponent from "./reteComponents/ColourFilter";
 import RectangleComponent from "./reteComponents/RectangleComponent";
 import EllipseComponent from "./reteComponents/EllipseComponent";
 import ColourComponent from "./reteComponents/ColourComponent";
@@ -24,7 +23,6 @@ export async function createEditor(container) {
        new TextComponent(), 
        new BlockifyComponent(),  
        new EndlessTest(),
-       new ColourFilterComponent(),
        new RectangleComponent(),
        new EllipseComponent(),
        new ColourComponent(),];

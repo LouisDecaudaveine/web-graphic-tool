@@ -10,13 +10,13 @@ export default class DropdownController extends Rete.Control {
         </div> 
     )
 
-    constructor(emitter, key, node, options, title = "", readonly=false){
+    constructor(emitter, key, node, options, title = "", defaultVal = "-- --", readonly=false){
         super(key);
         this.title = title;
         this.emitter = emitter;
         this.key = key;
         this.component = DropdownController.component;
-        const initial = node.data[key] || "-- --";
+        const initial = node.data[key] || defaultVal;
 
         node.data[key] = initial;
         this.props = {

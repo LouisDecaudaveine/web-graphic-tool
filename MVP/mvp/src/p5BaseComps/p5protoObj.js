@@ -13,10 +13,40 @@ export default function ObjCompProto(VPLNode){
     this.outputs = new Map();
     this.inputs = new Map();
 
+    //this object is passed down to all inputs
+    //editing this will send info down to all inputs
+    this.inputContext = {};
+    
+    //this is readonly
+    //this is all the data that the object recieves from its parents
+    /*example: 
+        [
+            {
+                socket: parentSoc, 
+                outputId: parent.id, 
+                context: parent.inputContext
+            }
+        ]
+    */
+    this.outputContext = [];
+
+    //in the scenario where your inputContext is dependent on your outputContext
+    //this function should be edited to set inputContext
+    this.setInputContext = () => {
+
+    }
+    
+    //used when given context from parent
+    this.registerParentContext = (pContext) => {
+        this.outputContext.push(pContext);
+        this.setInputContext();
+    }
 
     //this is the core of component: when a component updates this is what will change
-    //when sending out data to outputs this is what will be sent
-    this.data = {};
+    this.data = VPLNode.data;
+
+    //this is the processed data that is sent to the outputs
+    this.outData = {};
 
     //output/input  will be of the form: 
     // {socket: "socketName", component: _compRef_ }
@@ -37,10 +67,14 @@ export default function ObjCompProto(VPLNode){
             this.inputs.set(input.socket, [input.component])
         }
     }
+    this.updateFunc = async () => {
+        console.log(`node ${this.id} updated`);
+        return
+    }
 
     this.updateProcess = async (parentFrameCount) => {
         if(parentFrameCount != this.frameCount){
-            console.log(`node ${this.id} updated`);
+            await this.updateFunc();
             this.frameCount = parentFrameCount;
             return true;
         }
