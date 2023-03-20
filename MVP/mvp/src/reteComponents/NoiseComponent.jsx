@@ -7,6 +7,7 @@ import Rete from "rete";
 export default class NoiseComponent extends Rete.Component {
     constructor() {
         super("Noise");
+        this.path = [];
     }
 
     builder(node) {

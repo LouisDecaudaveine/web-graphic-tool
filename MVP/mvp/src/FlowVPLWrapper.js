@@ -4,16 +4,20 @@ import { createRoot } from "react-dom/client";
 import ReactRenderPlugin from "rete-react-render-plugin";
 import ConnectionPlugin from "rete-connection-plugin";
 import AreaPlugin from "rete-area-plugin";
-import Context from "efficy-rete-context-menu-plugin";
+import Context from "rete-context-menu-plugin";
 import NoiseComponent from "./reteComponents/NoiseComponent"
-import TextComponent from "./reteComponents/TextComponent";
-import BlockifyComponent from "./reteComponents/BlockifyComponent";
+import TextComponent from "./reteComponents/visualComponents/TextComponent";
+import BlockifyComponent from "./reteComponents/visualComponents/BlockifyComponent";
 import ListComponent from "./reteComponents/ListComponent";
 import SketchComponent from "./reteComponents/SketchComponent";
 import EndlessTest from "./reteComponents/EndlessTest";
-import RectangleComponent from "./reteComponents/RectangleComponent";
-import EllipseComponent from "./reteComponents/EllipseComponent";
+import RectangleComponent from "./reteComponents/visualComponents/RectangleComponent";
+import EllipseComponent from "./reteComponents/visualComponents/EllipseComponent";
 import ColourComponent from "./reteComponents/ColourComponent";
+import SineComponent from "./reteComponents/maths/SineComponent";
+import MultiplyComponent from "./reteComponents/maths/multiplyComponent";
+import AddComponent from "./reteComponents/maths/addComponent";
+import StepComponents from "./reteComponents/maths/stepComponent";
 
 export async function createEditor(container) {
 
@@ -22,15 +26,17 @@ export async function createEditor(container) {
        new NoiseComponent(),
        new TextComponent(), 
        new BlockifyComponent(),  
-       new EndlessTest(),
        new RectangleComponent(),
        new EllipseComponent(),
-       new ColourComponent(),];
+       new ColourComponent(),
+       new SineComponent(),
+       new MultiplyComponent(),
+       new StepComponents(),
+       new AddComponent(),];
 
     var editor = new Rete.NodeEditor("demo@0.1.0", container);
-    editor.use(ConnectionPlugin);new SketchComponent()
+    editor.use(ConnectionPlugin);
     editor.use(ReactRenderPlugin, { createRoot });
-    editor.use(Context);
 
     var engine = new Rete.Engine("demo@0.1.0");
     
@@ -38,6 +44,12 @@ export async function createEditor(container) {
     components.map((c) => {
         editor.register(c);
         engine.register(c);
+    });
+
+    editor.use(Context, {
+      // allocate(component) { 
+      //   return component.path;
+      // },
     });
 
     // var n1 = await components[0].createNode({

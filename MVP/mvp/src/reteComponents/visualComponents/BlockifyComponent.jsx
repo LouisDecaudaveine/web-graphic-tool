@@ -1,11 +1,12 @@
-import SocketList from "../SocketList";
-import NumController from "../reteControllers/NumController";
-import DropdownController from "../reteControllers/DropdownController";
+import SocketList from "../../SocketList";
+import NumController from "../../reteControllers/NumController";
+import DropdownController from "../../reteControllers/DropdownController";
 import Rete from "rete";
 
 export default class BlockifyComponent extends Rete.Component {
     constructor() {
         super("Blockify");
+        this.path = ['Visual'];
     }
 
     builder(node) {

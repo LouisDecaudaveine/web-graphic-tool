@@ -1,10 +1,12 @@
-import SocketList from "../SocketList";
-import NumController from "../reteControllers/NumController";
+import SocketList from "../../SocketList";
+import NumController from "../../reteControllers/NumController";
 import Rete from "rete";
 
 export default class EllipseComponent extends Rete.Component {
     constructor(){
         super("Ellipse");
+        this.path = ['Visual'];
+
     }
 
     builder(node){

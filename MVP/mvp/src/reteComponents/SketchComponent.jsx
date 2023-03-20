@@ -5,6 +5,7 @@ import Rete from "rete";
 export default class SketchComponent extends Rete.Component {
     constructor() {
         super("Sketch");
+        this.path = [];
         this.data.noContextMenu = true;
         this.data["layers"] = []; 
     }

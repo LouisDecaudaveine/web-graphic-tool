@@ -1,10 +1,11 @@
-import SocketList from "../SocketList";
-import NumController from "../reteControllers/NumController";
+import SocketList from "../../SocketList";
+import NumController from "../../reteControllers/NumController";
 import Rete from "rete";
 
 export default class RectangleComponent extends Rete.Component {
     constructor(){
         super("Rectangle");
+        this.path = ['Visual'];
     }
 
     builder(node){

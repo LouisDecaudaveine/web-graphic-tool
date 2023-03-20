@@ -9,6 +9,7 @@ export default class ColourComponent extends Rete.Component {
 
     constructor(){
         super("Colour");
+        this.path = [];
     }
 
    
