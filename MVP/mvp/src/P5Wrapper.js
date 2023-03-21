@@ -98,34 +98,36 @@ export default (props) => {
 	const mousePressed = (p5) => {
 		if(p5.mouseX < p5.width && p5.mouseX >= 0  && p5.mouseY < p5.height && p5.mouseY >= 0){
 			startedInCanvas = true;
-		}
-		layers.reverse().every((layer) => {
-			if(p5.mouseX > layer.bBox.x &&
-				p5.mouseX < layer.bBox.x + layer.bBox.w &&
-				p5.mouseY > layer.bBox.y && 
-				p5.mouseY < layer.bBox.y + layer.bBox.h){
-					
-					layer.anchorPoint = {
-						x: Math.floor(p5.mouseX),
-						y: Math.floor(p5.mouseY)
+		
+			layers.reverse().every((layer) => {
+				if(p5.mouseX > layer.bBox.x &&
+					p5.mouseX < layer.bBox.x + layer.bBox.w &&
+					p5.mouseY > layer.bBox.y && 
+					p5.mouseY < layer.bBox.y + layer.bBox.h){
+						
+						layer.anchorPoint = {
+							x: Math.floor(p5.mouseX),
+							y: Math.floor(p5.mouseY)
+						}
+						layer.anchored = true;
+						return false;
 					}
-					layer.anchored = true;
-					return false;
-				}
-			return true;	
-		})
-
+				return true;	
+			})
+		}
 	} 
 
 	const mouseDragged = (p5) => {
-		layers.reverse().every((layer) => {
-			if(layer.anchored) {
-				move(layer,p5.mouseX,p5.mouseY);
-				return false;
-			}
-			return true;
-		})
-
+		if(startedInCanvas){
+			layers.reverse().every((layer) => {
+				if(layer.anchored) {
+					move(layer,p5.mouseX,p5.mouseY);
+					return false;
+				}
+				return true;
+			})
+	
+		}
 	}
 
 	const mouseReleased = (p5) => {

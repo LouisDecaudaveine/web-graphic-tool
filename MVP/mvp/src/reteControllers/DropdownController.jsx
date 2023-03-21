@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
 import Select from 'react-select'
 
 import Rete from "rete";

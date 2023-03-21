@@ -27,6 +27,8 @@ export default function NoiseComp(VPLNode) {
             }
         }
         this.outData.noise = noise;
+
+        console.log(noise.length, noise[1].length)
     }
 
     this.updateNoise = async () => {
@@ -45,6 +47,7 @@ export default function NoiseComp(VPLNode) {
     this.updateFunc = async () => {
         // console.log(`Noise node ${this.id} has updated`)
         await this.updateNoise();
+        
         return;
     }
 

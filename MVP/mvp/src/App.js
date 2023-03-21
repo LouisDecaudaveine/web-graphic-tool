@@ -10,7 +10,8 @@ import Tutorial from './vanillaReactComponents/Tutorial';
 
 
 function Editor(props){
-  const [setContainer, getEditor,setEditor] = useRete();
+
+  const [setContainer, getEditor,setEditor] = useRete(props.reteProps);
 
   const [sketchCreated, setSketchCreated] = useState(false);
 
@@ -51,6 +52,23 @@ function Editor(props){
 const Home = () => {
   const [serialisedData, setSerialisedData] = useState({});
   const [editedSerialised, setEditedSerialised] = useState();
+  //under the form of: 
+  /* 
+  [
+    ["3", data]
+  ]
+  */
+  const [extraMedia, setExtraMedia] = useState(new Map());
+
+  const removeExtraMedia = async (id) => {
+    setExtraMedia(extraMedia.delete(id));
+    console.log(extraMedia);
+  }
+
+  const addExtraMedia = async (packagedMedia) => {
+    setExtraMedia(extraMedia.set(packagedMedia.id, packagedMedia.media));
+    console.log(extraMedia);
+  }
 
   const getSerialisedParentHandler = (se) => {
     setSerialisedData(se);
@@ -62,15 +80,21 @@ const Home = () => {
     setEditedSerialised(jsonData);
   } 
 
+  const reteProps = {
+    addMedia: addExtraMedia,
+    removeMedia: removeExtraMedia,
+  }
   
   return(
     <div className='App'>
-      <Editor getSerializedData={getSerialisedParentHandler} editedSerialised={editedSerialised}/>
+      <Editor getSerializedData={getSerialisedParentHandler} editedSerialised={editedSerialised} reteProps={reteProps}/>
       {
         serialisedData.nodes && 
         Object.keys(serialisedData.nodes).length > 0 &&
         serialisedData.nodes[Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].name === "Sketch" && 
-        <P5Wrapper VPLState={serialisedData} 
+        <P5Wrapper 
+          extraMedia={extraMedia}
+          VPLState={serialisedData} 
           width={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.width} 
           height ={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.height}
           editedSerialisedHandler={setEditedParentHandler}

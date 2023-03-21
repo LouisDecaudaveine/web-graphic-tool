@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import ReactRenderPlugin from "rete-react-render-plugin";
 import ConnectionPlugin from "rete-connection-plugin";
 import AreaPlugin from "rete-area-plugin";
-import Context from "rete-context-menu-plugin";
+import ContextMenuPlugin from 'rete-context-menu-plugin';
 import NoiseComponent from "./reteComponents/NoiseComponent"
 import TextComponent from "./reteComponents/visualComponents/TextComponent";
 import BlockifyComponent from "./reteComponents/visualComponents/BlockifyComponent";
@@ -18,8 +18,9 @@ import SineComponent from "./reteComponents/maths/SineComponent";
 import MultiplyComponent from "./reteComponents/maths/multiplyComponent";
 import AddComponent from "./reteComponents/maths/addComponent";
 import StepComponents from "./reteComponents/maths/stepComponent";
+import ImageComponent from "./reteComponents/visualComponents/ImageComponent";
 
-export async function createEditor(container) {
+export async function createEditor(container, props) {
 
     var components = [
        new SketchComponent(),
@@ -32,7 +33,8 @@ export async function createEditor(container) {
        new SineComponent(),
        new MultiplyComponent(),
        new StepComponents(),
-       new AddComponent(),];
+       new AddComponent(),
+       new ImageComponent(props.addMedia),];
 
     var editor = new Rete.NodeEditor("demo@0.1.0", container);
     editor.use(ConnectionPlugin);
@@ -46,42 +48,17 @@ export async function createEditor(container) {
         engine.register(c);
     });
 
-    editor.use(Context, {
+    editor.use(ContextMenuPlugin, {
       // allocate(component) { 
       //   return component.path;
       // },
     });
 
-    // var n1 = await components[0].createNode({
-    //   speed: 0.01,
-    //   dimensions: 2,
-    //   seed: Math.round(Math.random()*10000),
-    // });
-    // var n2 = await components[1].createNode({
-    //   xPos: 50, 
-    //   yPos: 100,
-    //   size: 12,
-    // });
-
-    // var n3 = await components[2].createNode({
-    //   width: 30,
-    //   height: 50,
-    // });
-    // var n4 = await components[3].createNode();
     var n5 = await components[0].createNode({
       width : 800,
       height: 1000,
     });
-
-    // n1.position = [50,50];
-    // n2.position = [100,50];
-    // n3.position = [300,50];
-    // n4.position = [-100,50];
     n5.position = [-300,50];
-    // editor.addNode(n1);
-    // editor.addNode(n2);
-    // editor.addNode(n3);
-    // editor.addNode(n4);
     editor.addNode(n5);
 
     //updates engine when editor content is modified
@@ -93,9 +70,14 @@ export async function createEditor(container) {
           await engine.abort();
           await engine.process(editor.toJSON());
         }
-      );
+    );
 
 
+    editor.on("noderemoved",
+      async (node) => {
+        if(node.name === "Image") await props.removeMedia(node.id);
+      }
+    );
     //this is half of the solution to make sure that only 1 sketch component is possible
     editor.on('showcontextmenu', ({ node }) => {
       return !node || !editor.components.get(node.name).data.noContextMenu;
@@ -135,9 +117,10 @@ export function useRete(props) {
 
     useEffect(() => {
       if (container) {
-          createEditor(container).then((value) => {
+          createEditor(container, props).then((value) => {
           console.log("created");
           editorRef.current = value;
+
         })
       }
     }, [container]);

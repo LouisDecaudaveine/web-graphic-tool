@@ -44,7 +44,7 @@ export default function BlockifyComp(VPLNode) {
         const outputMat = [];
         for(let i = 0; i< inputMat.length; i++){
             outputMat.push([]);
-            for(let j = 0; j< inputMat.length; j++){
+            for(let j = 0; j< inputMat[1].length; j++){
                 const col = Math.floor(inputMat[i][j] * 255)
                 outputMat[i].push({r: col, g:col, b:col});
             }
@@ -57,7 +57,7 @@ export default function BlockifyComp(VPLNode) {
         const outputMat = [];
         for(let i = 0; i< inputMat.length; i++){
             outputMat.push([]);
-            for(let j = 0; j< inputMat.length; j++){
+            for(let j = 0; j< inputMat[1].length; j++){
                 outputMat[i].push({r: inputMat[i][j]*100, g:inputMat[i][j]*255, b:inputMat[i][j]*100});
             }
         }
@@ -69,7 +69,7 @@ export default function BlockifyComp(VPLNode) {
         const outputMat = [];
         for(let i = 0; i< inputMat.length; i++){
             outputMat.push([]);
-            for(let j = 0; j< inputMat.length; j++){
+            for(let j = 0; j< inputMat[1].length; j++){
                 outputMat[i].push({r: inputMat[i][j]*200, g:inputMat[i][j]*255, b:0});
             }
         }

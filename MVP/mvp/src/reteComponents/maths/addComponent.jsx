@@ -24,7 +24,9 @@ export default class AddComponent extends Rete.Component {
     worker(node, inputs, outputs) {
         var n1 = inputs["num1"].length ? inputs["num1"][0] : node.data.num1;
         var n2 = inputs["num2"].length ? inputs["num2"][0] : node.data.num2;
-        var sum = n1 + n2;
+        var sum = Number(n1) + Number(n2);
+
+        console.log("n1: ", n1, "n2:", n2, "sum:", sum);
 
         this.editor.nodes
         .find((n) => n.id == node.id)

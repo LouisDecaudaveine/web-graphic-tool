@@ -14,12 +14,15 @@ export default class ColourComponent extends Rete.Component {
 
    
     builder(node){
-        var rCon = new NumController(this.editor,"red", node, false, "red", false);
-        var gCon = new NumController(this.editor,"green", node, false, "green", false);
-        var bCon = new NumController(this.editor,"blue", node, false, "blue",false);
+        var rCon = new Rete.Input("red", "red", SocketList.numSocket, false);
+        rCon.addControl(new NumController(this.editor,"red", node, false, "red", false));
+        var gCon = new Rete.Input("green", "green", SocketList.numSocket, false);
+        gCon.addControl(new NumController(this.editor,"green", node, false, "green", false));
+        var bCon = new Rete.Input("blue", "blue", SocketList.numSocket, false);
+        bCon.addControl(new NumController(this.editor,"blue", node, false, "blue",false));
         var colPrev = new ColourPreviewCon(this.editor,"colourPrev",node,this.hexVal);
         var outCol = new Rete.Output("colour", "output", SocketList.colourSocket, true);
-        return node.addControl(colPrev).addControl(rCon).addControl(gCon).addControl(bCon).addOutput(outCol)
+        return node.addControl(colPrev).addInput(rCon).addInput(gCon).addInput(bCon).addOutput(outCol)
     }
 
 
