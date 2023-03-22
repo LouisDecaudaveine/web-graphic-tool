@@ -15,6 +15,10 @@ function InputMedia(props){
         hiddenFileInput.current.click()
     }
 
+    useEffect(() => {
+        console.log("file path Changed",filePath);
+    }, [filePath])
+
     function onMediaChange(e) {
         const filePath = e.target.files[0].name
         const newMediaUrl = URL.createObjectURL(e.target.files[0]);
@@ -41,9 +45,9 @@ function InputMedia(props){
 
 export default class FileExplorerCon extends Rete.Control {
 
-    static component = ({id, onChange, type}) => (
+    static component = ({id, onChange, type,filePath}) => (
         <div>
-            <InputMedia  id={id} onChange={onChange} type={type}/>
+            <InputMedia  id={id} onChange={onChange} type={type} filePath={filePath}/>
         </div> 
     )
 
@@ -53,7 +57,6 @@ export default class FileExplorerCon extends Rete.Control {
         this.key = key;
         this.component = FileExplorerCon.component;
         const initial = node.data[key] || {filePath:"", media:null};
-        console.log("in control", initial)
         node.data[key] = initial;
         this.props = {
             onChange: (v) => {

@@ -11,22 +11,36 @@ export default function ImageComp(VPLNode, imagePack) {
     this.bBox = {x: this.posX, y: this.posY, w: this.width, h: this.height};
 
     // console.log("in p5 Comp", this.updatedSerialised.fileExp);
-    this.preload = (p5, extraMedia, setExtraMedia) => {
+    this.loadMedia = (p5, extraMedia, setExtraMedia) => {
+
+        
         if(VPLNode.data.fileExp.media){
+            //if nothing has changed with a source
+            if((extraMedia.has(VPLNode.id)) 
+                && (extraMedia.get(VPLNode.id).imageURL === VPLNode.data.fileExp.media))
+                 return;
+            //if something has chnaged
             const img = new Image();
             img.src = VPLNode.data.fileExp.media;
             img.onload = () => {
-                setExtraMedia(extraMedia.set(VPLNode.id,p5.loadImage(img.src, true)));
+                setExtraMedia(extraMedia.set(VPLNode.id,{p5Image:p5.loadImage(img.src, true), imageURL: img.src}));
                 console.log("Image Loaded");
             }
+            return;
+        }
+        //if there is no longer a source
+        else{
+            //if no image has been selected delete
+            if(extraMedia.has(VPLNode.id)) 
+                setExtraMedia(extraMedia.delete(VPLNode.id));
+            return;
         }
     }
 
     this.show = (p5, extraMedia) => {
-        console.log(extraMedia);
         p5.push()
-            if(extraMedia.get(VPLNode.id)){
-                p5.image(extraMedia.get(VPLNode.id),this.posX,this.posY);
+            if(extraMedia.has(VPLNode.id)){
+                p5.image(extraMedia.get(VPLNode.id).p5Image,this.posX,this.posY);
             }
             else{
                 p5.noFill()
@@ -36,7 +50,7 @@ export default function ImageComp(VPLNode, imagePack) {
         p5.pop()
     }
 
-    this.updatedFunc = async () => {
+    this.updateFunc = async () => {
         this.bBox = {x: this.posX, y: this.posY, w: this.width, h: this.height};
 
         this.updatedSerialised.xPos = this.posX;

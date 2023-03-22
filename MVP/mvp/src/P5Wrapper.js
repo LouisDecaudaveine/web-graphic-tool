@@ -40,6 +40,7 @@ export default (props) => {
 	}
 
 	const setSerialisedLayer = (layer) => {
+		console.log(layer.updatedSerialised);
 		editedVPL.nodes[layer.id.toString()].data = JSON.parse(JSON.stringify(layer.updatedSerialised));
 	}
 
@@ -55,6 +56,18 @@ export default (props) => {
 
 		obj.anchorPoint = {x: mouseX, y: mouseY};
 	}
+
+	//In the scenario in which a media component changes image, is deleted, or is created
+	//this function will update extraMedia
+	const updateExtraMedia = (p5) => {
+		objects.forEach(object => {
+			if(object.name === "Image"){
+				object.loadMedia(p5, extraMedia, setExtraMedia);
+				console.log("in setup",extraMedia);
+			}
+		})
+	}
+
 
 	// hacky but gets around the weird lifecycle of this nested component
 	let tempFont;
@@ -79,16 +92,24 @@ export default (props) => {
 
 		objects.forEach(object => {
 			if(object.name === "Image"){
-				object.preload(p5, extraMedia, setExtraMedia);
+				object.loadMedia(p5, extraMedia, setExtraMedia);
 				console.log("in setup",extraMedia);
 			}
 		})
+		console.log("jfsdjfksjfk",extraMedia)
+
 		
 	};
 	
 	const draw = (p5) => {
 		//this seems really hacky but hopefully will work fine
 		checkFont();
+		
+		//updating image sources
+		objects.forEach( object => {
+			if(object.name === "Image")
+				object.loadMedia(p5, extraMedia, setExtraMedia);
+		})
 
 		if(needsResizing){
 			p5.resizeCanvas(props.width,props.height);
@@ -99,7 +120,7 @@ export default (props) => {
 
 		layers.forEach((element) => {
 			const update = element.updatePromise(p5.frameCount);
-			update()
+			update();
 		});
 
 		layers.forEach(layer => {
