@@ -20,7 +20,7 @@ import AddComponent from "./reteComponents/maths/addComponent";
 import StepComponents from "./reteComponents/maths/stepComponent";
 import ImageComponent from "./reteComponents/visualComponents/ImageComponent";
 
-export async function createEditor(container, props) {
+export async function createEditor(container) {
 
     var components = [
        new SketchComponent(),
@@ -34,7 +34,7 @@ export async function createEditor(container, props) {
        new MultiplyComponent(),
        new StepComponents(),
        new AddComponent(),
-       new ImageComponent(props.addMedia),];
+       new ImageComponent(),];
 
     var editor = new Rete.NodeEditor("demo@0.1.0", container);
     editor.use(ConnectionPlugin);
@@ -72,12 +72,6 @@ export async function createEditor(container, props) {
         }
     );
 
-
-    editor.on("noderemoved",
-      async (node) => {
-        if(node.name === "Image") await props.removeMedia(node.id);
-      }
-    );
     //this is half of the solution to make sure that only 1 sketch component is possible
     editor.on('showcontextmenu', ({ node }) => {
       return !node || !editor.components.get(node.name).data.noContextMenu;
@@ -112,12 +106,11 @@ export function useRete(props) {
     const setEditor = async (newEditor) => {
       console.log("now in the VPL wrapper before await");
       await editorRef.current.fromJSON(newEditor);
-      console.log("after await");
     }
 
     useEffect(() => {
       if (container) {
-          createEditor(container, props).then((value) => {
+          createEditor(container).then((value) => {
           console.log("created");
           editorRef.current = value;
 

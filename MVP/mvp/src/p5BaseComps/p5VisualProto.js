@@ -28,7 +28,7 @@ export default function VisualCompProto(VPLNode) {
         p5.rect(this.bBox.x,this.bBox.y,this.bBox.w,this.bBox.h)
     }
 
-    this.update = (inputs) => {
+    this.updateFunc = async () => {
 
     }
 }

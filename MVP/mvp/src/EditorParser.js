@@ -25,7 +25,6 @@ function initHelper(objs, SerialisedEditor, VPLcomp, parent, parentSoc) {
 
 
 export function ReadParser(SerialisedEditor, sketchIndex){
-
     //under the form [["2", <object>],["13", <object>]]
     const objs = new Map();
     const layers = [];
@@ -33,7 +32,7 @@ export function ReadParser(SerialisedEditor, sketchIndex){
         SerialisedEditor.nodes[sketchIndex].data.layers
         .forEach((visComp) => {
             const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
-            const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp)
+            const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp);
             p5Comp.registerParentContext({socket: "visSock", outputId: sketchIndex, context: SerialisedEditor.nodes[sketchIndex].data})
             objs.set(visComp.node, p5Comp);
             layers.push(p5Comp);

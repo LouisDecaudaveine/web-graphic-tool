@@ -1,6 +1,7 @@
 import BlockifyComp from "./p5Components/BlockifyComp"
 import ColourComp from "./p5Components/ColourComp"
 import EllipseComp from "./p5Components/EllipseComp"
+import ImageComp from "./p5Components/ImageComp"
 import AddComp from "./p5Components/maths/AddComp"
 import MultComp from "./p5Components/maths/MultComp"
 import SineComp from "./p5Components/maths/SineComp"
@@ -11,6 +12,7 @@ import TestComp from "./p5Components/TestComp"
 import TextComp from "./p5Components/TextComp"
 
 const p5ComponentList = {
+    Image: ImageComp,
     Step: StepComp,
     Sine: SineComp,
     Multiply: MultComp,

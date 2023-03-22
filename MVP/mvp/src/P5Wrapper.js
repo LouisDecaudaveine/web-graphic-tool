@@ -8,11 +8,16 @@ import { useState } from "react";
 export default (props) => {
 	const [font, setFont] = useState();
 
+	//this is where images (and maybe video/sound) is stored
+	const [extraMedia, setExtraMedia] = useState(new Map());
+
 	const editedVPL = JSON.parse(JSON.stringify(props.VPLState)); 
 	//objects: these are all the nodes that you can see on the vpl 
 	//layers: is a list of all the visual component they are rendered from lowest index to highest index
+	console.log("p5Wrapper Rerendered");
 	const [objects,layers] = ReadParser(props.VPLState, props.sketchNodeIndex);
 
+	
 	let needsResizing = false
 	//this queues a resize of canvas whenever the sketch VPL component changes its dimensions
 	useEffect(() => {
@@ -65,11 +70,20 @@ export default (props) => {
 	let startedInCanvas = false
 
 	const setup = (p5, canvasParentRef) => {
+		console.log("in setup: ", objects);
 		// use parent to render the canvas in this ref
 		// (without that p5 will render the canvas outside of your component)
 		const cvn = p5.createCanvas(props.width, props.height).parent(canvasParentRef);
 
 		p5.textFont(tempFont);
+
+		objects.forEach(object => {
+			if(object.name === "Image"){
+				object.preload(p5, extraMedia, setExtraMedia);
+				console.log("in setup",extraMedia);
+			}
+		})
+		
 	};
 	
 	const draw = (p5) => {
@@ -89,11 +103,13 @@ export default (props) => {
 		});
 
 		layers.forEach(layer => {
-			layer.show(p5);
+			if(layer.name === "Image") layer.show(p5, extraMedia);
+			else layer.show(p5);
 		})
 		
 		// p5.frameRate(1);
-	};
+	};  
+
 
 	const mousePressed = (p5) => {
 		if(p5.mouseX < p5.width && p5.mouseX >= 0  && p5.mouseY < p5.height && p5.mouseY >= 0){
