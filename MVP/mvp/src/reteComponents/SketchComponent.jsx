@@ -4,6 +4,7 @@ import Rete from "rete";
 
 export default class SketchComponent extends Rete.Component {
     constructor() {
+        
         super("Sketch");
         this.path = [];
         this.data.noContextMenu = true;
@@ -19,6 +20,7 @@ export default class SketchComponent extends Rete.Component {
 
     worker(node) {
         node.data.layers = node.inputs.viscomps.connections;
+        this.data.layers = node.inputs.viscomps.connections;
     }
 
 }

@@ -83,7 +83,7 @@ export default (props) => {
 	let startedInCanvas = false
 
 	const setup = (p5, canvasParentRef) => {
-		console.log("in setup: ", objects);
+		// console.log("in setup: ", objects);
 		// use parent to render the canvas in this ref
 		// (without that p5 will render the canvas outside of your component)
 		const cvn = p5.createCanvas(props.width, props.height).parent(canvasParentRef);
@@ -96,7 +96,7 @@ export default (props) => {
 				console.log("in setup",extraMedia);
 			}
 		})
-		console.log("jfsdjfksjfk",extraMedia)
+		// console.log("jfsdjfksjfk",extraMedia)
 
 		
 	};

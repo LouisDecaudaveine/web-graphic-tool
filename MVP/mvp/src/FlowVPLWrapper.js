@@ -94,7 +94,7 @@ export async function createEditor(container) {
 }
 
 
-export function useRete(props) {
+export function useRete(addLayer, removeLayer) {
     const [container, setContainer] = useState(null);
     const editorRef = useRef();
 
@@ -110,10 +110,9 @@ export function useRete(props) {
 
     useEffect(() => {
       if (container) {
-          createEditor(container).then((value) => {
+          createEditor(container, addLayer, removeLayer).then((value) => {
           console.log("created");
           editorRef.current = value;
-
         })
       }
     }, [container]);
