@@ -26,13 +26,12 @@ function Editor(props){
   },[props.editedSerialised]);
 
   return (
-    <div>
+    <div style={{display: "inline-block"}}>
       <div 
         style = {{
           width: "75vw",
           height: "75vh",
-          margin: "auto",
-          marginTop: "1rem",
+             marginTop: "1rem",
         }}>
           <div
           style = {{backgroundColor:"#E7AB9A"}} 
@@ -59,7 +58,7 @@ const Home = () => {
 
   const updateLayers = (added, removed) => {
     const layersLeft = layers.filter(layer => !removed.includes(layer.id));
-    const newLayers = added.map(layer => {return {id:layer.node, name:layer.output}});
+    const newLayers = added.map(layer => {return {id:layer.node, name:layer.output+layer.node.toString()}});
     const updatedLayers = [...layersLeft,...newLayers];
     console.log("updated Layers",updatedLayers);
     setLayers(updatedLayers);
@@ -85,10 +84,13 @@ const Home = () => {
 
   return(
     <div className='App'>
-      <Editor 
-        getSerializedData={getSerialisedParentHandler} 
-        editedSerialised={editedSerialised} 
-      />
+      <div className='EditorLayersWrapper'>
+        <Editor 
+          getSerializedData={getSerialisedParentHandler} 
+          editedSerialised={editedSerialised} 
+        />
+        <LayerWrapper layers={layers} updateLayers={setLayers} />
+      </div>
       {
         serialisedData.nodes && 
         Object.keys(serialisedData.nodes).length > 0 &&
@@ -98,9 +100,10 @@ const Home = () => {
           width={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.width} 
           height ={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.height}
           editedSerialisedHandler={setEditedParentHandler}
-          sketchNodeIndex={Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()}/>
+          sketchNodeIndex={Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()}
+          orderedLayers={layers}
+          />
       }
-      <LayerWrapper layers={layers} updateLayers={setLayers} />
 
     </div>
   )

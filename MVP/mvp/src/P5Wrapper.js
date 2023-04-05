@@ -123,7 +123,8 @@ export default (props) => {
 			update();
 		});
 
-		layers.forEach(layer => {
+		props.orderedLayers.forEach(({id, name}) => {
+			const layer = layers.find(obj => obj.id === id);
 			if(layer.name === "Image") layer.show(p5, extraMedia);
 			else layer.show(p5);
 		})
