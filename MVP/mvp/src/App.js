@@ -1,10 +1,17 @@
 import './App.css';
 import { useRete } from './FlowVPLWrapper';
 import P5Wrapper from './P5Wrapper';
+import Header from './vanillaReactComponents/Header';
 import { useState, useEffect } from 'react';
 import React from 'react';
+import {Routes, Route } from 'react-router-dom';
+import About from './vanillaReactComponents/About';
+import Tutorial from './vanillaReactComponents/Tutorial';
+import LayerWrapper from './layers/layerWrapper';
+
 
 function Editor(props){
+
   const [setContainer, getEditor,setEditor] = useRete();
 
   const [sketchCreated, setSketchCreated] = useState(false);
@@ -19,15 +26,16 @@ function Editor(props){
   },[props.editedSerialised]);
 
   return (
-    <div>
+    <div style={{display: "inline-block"}}>
       <div 
         style = {{
-          width: "50vw",
-          height: "50vh",
-          border: "solid black 2px",
-          margin: "auto",
+          width: "75vw",
+          height: "75vh",
+             marginTop: "1rem",
         }}>
-          <div ref={(ref) => {
+          <div
+          style = {{backgroundColor:"#E7AB9A"}} 
+          ref={(ref) => {
             ref && setContainer(ref);
             }}/>
 
@@ -41,14 +49,32 @@ function Editor(props){
   )
 }
 
-
-function App() {
+const Home = () => {
   const [serialisedData, setSerialisedData] = useState({});
   const [editedSerialised, setEditedSerialised] = useState();
+  //of the form: [{id: 1, name: layer 1}]
+  const [layers, setLayers] = useState([]);
 
+
+  const updateLayers = (added, removed) => {
+    const layersLeft = layers.filter(layer => !removed.includes(layer.id));
+    const newLayers = added.map(layer => {return {id:layer.node, name:layer.output+layer.node.toString()}});
+    const updatedLayers = [...layersLeft,...newLayers];
+    console.log("updated Layers",updatedLayers);
+    setLayers(updatedLayers);
+  }
+  
   const getSerialisedParentHandler = (se) => {
-    // serializedEditor = JSON.parse(JSON.stringify(se));
     setSerialisedData(se);
+    
+    //this segment is to update the layers
+    const serialisedlayers = se.nodes[Math.min(...Object.keys(se.nodes).map(Number)).toString()].data.layers;
+    console.log("serialisedLayers:", serialisedlayers, "app layers:", layers)
+    const addedLays = serialisedlayers.filter(slob => !layers.find(lob => lob.id === slob.node));
+    const removedLays = layers.filter(lob => !serialisedlayers.find(slob => lob.id === slob.node)).map(obj => {return obj.id});
+
+    updateLayers(addedLays, removedLays);
+
     console.log("Saved VPE", serialisedData);
   }
 
@@ -56,24 +82,45 @@ function App() {
     setEditedSerialised(jsonData);
   } 
 
-  //Currently I am building nodes and connections within createEditor()
-  //in lowVPLWrapper.js. For the final build a demo editor will be sent to the Editor component,
-  //then once the createEditor promise is done will use the editor.fromJSON() to init the demo
+  return(
+    <div className='App'>
+      <div className='EditorLayersWrapper'>
+        <Editor 
+          getSerializedData={getSerialisedParentHandler} 
+          editedSerialised={editedSerialised} 
+        />
+        <LayerWrapper layers={layers} updateLayers={setLayers} />
+      </div>
+      {
+        serialisedData.nodes && 
+        Object.keys(serialisedData.nodes).length > 0 &&
+        serialisedData.nodes[Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].name === "Sketch" && 
+        <P5Wrapper 
+          VPLState={serialisedData} 
+          width={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.width} 
+          height ={serialisedData.nodes[  Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()].data.height}
+          editedSerialisedHandler={setEditedParentHandler}
+          sketchNodeIndex={Math.min(...Object.keys(serialisedData.nodes).map(Number)).toString()}
+          orderedLayers={layers}
+          />
+      }
+
+    </div>
+  )
+}
+
+
+
+function App() {
 
   return (
     <div className="App">
-      <Editor getSerializedData={getSerialisedParentHandler} editedSerialised={editedSerialised}/>
-
-      {
-        serialisedData.nodes && 
-        serialisedData.nodes["1"] && 
-        serialisedData.nodes["1"].name === "Sketch" && 
-        <P5Wrapper VPLState={serialisedData} 
-          width={serialisedData.nodes["1"].data.width} 
-          height ={serialisedData.nodes["1"].data.height}
-          editedSerialisedHandler={setEditedParentHandler}/>
-      }
-
+      <Header />
+      <Routes>
+        <Route  path='/' element={<Home/>}></Route>
+        <Route  path='/about' element={<About/>}></Route>
+        <Route  path='/tutorial' element={<Tutorial/>}></Route>
+      </Routes>
     </div>
   );
 }

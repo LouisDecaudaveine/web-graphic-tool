@@ -1,36 +1,29 @@
 import mirrorFont from "../assets/mirror82_v2.otf"
+import VisualCompProto from "../p5BaseComps/p5VisualProto";
 
 export default function TextComp(VPLNode){
 
-    //these is all the properties relating to the VPL
-    this.id = VPLNode.id;
-    this.posX = VPLNode.data.xPos;
-    this.posY = VPLNode.data.yPos;
+    VisualCompProto.call(this, VPLNode)
+
     this.content = VPLNode.data.text;
-    this.size = VPLNode.data.size;
+    this.data.size = VPLNode.data.size;
+    this.data.col = {r:255,g:255,b:255};
     this.type = "Text";
 
-    this.updatedSerialised = {
-        size: this.size, 
-        text: this.content, 
-        xPos: this.xPos,
-        yPos: this.yPos
-        };
+    this.updatedSerialised.size = this.data.size;
+    this.updatedSerialised.text = this.content;
 
-    //these one here are for anything to do with the sketch
     this.font = null;
-    this.anchorPoint = {x: null, y: null};
-    this.anchored = false;
-    this.bBox = null;
     this.setFonty = (font) => {
         this.font = font;
-        this.bBox =  font && font.textBounds(this.content,this.posX,this.posY,this.size);
+        this.bBox =  font && font.textBounds(this.content,this.posX,this.posY,this.data.size);
     }
 
     this.show = (p5) => {
         p5.push(); 
-            p5.fill(255);
-            p5.textSize(this.size);
+            // p5.textAlign(p5.CENTER)
+            p5.fill(this.data.col.r, this.data.col.g, this.data.col.b);
+            p5.textSize(this.data.size);
             p5.text(this.content, this.posX, this.posY);
             
             //visualising the bounding box
@@ -40,13 +33,15 @@ export default function TextComp(VPLNode){
         p5.pop();
     }
 
-    this.update = (inputs) => {
-        // console.log(this.bBox);
-        this.bBox =  this.font && this.font.textBounds(this.content,this.posX,this.posY,this.size);
+    this.updateFunc = async () => {
+        if(Boolean(this.inputs.get("size"))) this.data.size = this.inputs.get("size")[0].outData.num;
+        if(Boolean(this.inputs.get("colour"))) this.data.col = this.inputs.get("colour")[0].outData.colour;
+
+        this.bBox =  this.font && this.font.textBounds(this.content,this.posX,this.posY,this.data.size);
 
         //updating the VPL data
         this.updatedSerialised = {
-            size: this.size, 
+            size: this.data.size, 
             text: this.content, 
             xPos: this.posX,
             yPos: this.posY

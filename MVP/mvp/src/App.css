@@ -6,3 +6,60 @@
   padding-right: 3px;
   color: white;
 }
+
+.websiteTitle {
+  color: #DF7857;
+}
+
+.navigator {
+  display: inline;
+  margin: auto;
+}
+
+.navItem {
+  display: inline;
+  text-decoration: none;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-bottom: 2rem;
+  color: #EDE9D5;
+}
+
+.header {
+  margin: auto;
+  padding:1rem;
+  background-color: #617143;
+}
+
+.layersContainer {
+  border-radius: 3px;
+  padding:0rem 1rem ;
+  background-color: #6171437e;
+  margin-top: 1rem;
+  vertical-align: top;
+  display: inline-block;
+  width: auto;
+  margin-left: 1rem;
+  height: 100%;
+  overflow: auto;
+}
+
+.EditorLayersWrapper{
+  width:100%;
+  text-align: center;
+}
+
+.layersUL{
+  padding:0%;
+}
+
+.layersLI {
+  list-style: none;
+  padding:10px;
+  border-bottom: 2px solid #00000071;
+  margin: auto;
+}
+
+li{
+  list-style: none;
+}

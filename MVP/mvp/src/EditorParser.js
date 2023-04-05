@@ -1,55 +1,52 @@
 //import p5 classes/objects not sure how they will be made
+import ObjCompProto from "./p5BaseComps/p5protoObj";
 import p5ComponentList from "./p5ComponentList";
 
 
-//this is just a demo function will delete later
-function EllipseObj(xPos, yPos){   
-    this.id = -1;
-    this.x = xPos;
-    this.y = yPos;
-    this.bassX = xPos;
-    this.bassY = yPos;
-    this.state = 0;
-
-    this.show = (p5) => {
-        p5.fill(255,0,0);
-        p5.ellipse(this.x,this.y, 70,70);
+function initHelper(objs, SerialisedEditor, VPLcomp, parent, parentSoc) {
+    let currP5Comp;
+    if(!objs.has(VPLcomp.id)){
+        currP5Comp = new p5ComponentList[VPLcomp.name](VPLcomp);
+        objs.set(VPLcomp.id, currP5Comp);
     }
+    else currP5Comp = objs.get(VPLcomp.id);
+    currP5Comp.registerParentContext({socket: parentSoc, outputId: parent.id, context: parent.inputContext})
+    parent.addInput({socket: parentSoc, component: currP5Comp});
 
-    this.update = (inputs) => {
-        this.state += 0.01;
-        this.x = this.bassX + Math.sin(this.state)*50;
-        this.y = this.bassY + Math.cos(this.state)*50;
+    if(JSON.stringify(VPLcomp.inputs) !== "{}"){
+        Object.entries(VPLcomp.inputs).forEach((socket) => {
+            socket[1].connections.forEach((con) =>{
+                const currVPLComp = SerialisedEditor.nodes[con.node];
+                initHelper(objs, SerialisedEditor,currVPLComp, currP5Comp, socket[0]);
+            })
+        });  
     }
-} 
-
-function treeDescent(SerialisedEditor){
-    // this will go down the VPL tree starting at Sketch node inputs
-    // following a depth first search pattern, 
-    // on its way down it will either create the necessary objects
-    // or add what is needed to them 
 }
 
 
-export function ReadParser(SerialisedEditor) {
-    // const ellipseO = new EllipseObj(250,250);
-
-    const objects = [];
+export function ReadParser(SerialisedEditor, sketchIndex){
+    //under the form [["2", <object>],["13", <object>]]
+    const objs = new Map();
     const layers = [];
-
-    //first checking if editor exist
-    //then going to inputs of sketch Node
-    //checking if node already exists if not adding it to objects
-    SerialisedEditor.nodes && 
-        SerialisedEditor.nodes["1"].data.layers
+    SerialisedEditor.nodes &&
+        SerialisedEditor.nodes[sketchIndex].data.layers
         .forEach((visComp) => {
-           if(!objects.some((obj) => obj.id === visComp.node)){
-                const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
-                const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp)
-                objects.push(p5Comp);
-                layers.push(p5Comp);
-           }
-        }); 
+            const VPLcomp = SerialisedEditor.nodes[visComp.node.toString()];
+            const p5Comp = new p5ComponentList[VPLcomp.name](VPLcomp);
+            p5Comp.registerParentContext({socket: "visSock", outputId: sketchIndex, context: SerialisedEditor.nodes[sketchIndex].data})
+            objs.set(visComp.node, p5Comp);
+            layers.push(p5Comp);
 
-    return [objects, layers];
+            if(JSON.stringify(VPLcomp.inputs) !== "{}"){
+                Object.entries(VPLcomp.inputs).forEach((socket) => {
+                    socket[1].connections.forEach((con) =>{
+                        const currVPLComp = SerialisedEditor.nodes[con.node];
+                        initHelper(objs, SerialisedEditor,currVPLComp, p5Comp, socket[0]);
+                    })
+                });  
+            }
+
+        });
+    
+    return [objs, layers]
 }
