@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Sketch from "react-p5";
 import  {ReadParser}  from "./EditorParser"
-import mirrorFont from "./assets/mirror82_v2.otf"
+import consoleFont from "./assets/LucidaConsoleRegular.ttf"
 import { objectToString } from "@vue/shared";
 import { useState } from "react";
 
@@ -72,7 +72,7 @@ export default (props) => {
 	// hacky but gets around the weird lifecycle of this nested component
 	let tempFont;
 	const preload = (p5) => {
-		tempFont = p5.loadFont(mirrorFont, (fonty) => {
+		tempFont = p5.loadFont(consoleFont, (fonty) => {
 			setFont(fonty);
 		});
 	}

@@ -1,4 +1,3 @@
-import mirrorFont from "../assets/mirror82_v2.otf"
 import VisualCompProto from "../p5BaseComps/p5VisualProto";
 
 export default function TextComp(VPLNode){
@@ -27,9 +26,9 @@ export default function TextComp(VPLNode){
             p5.text(this.content, this.posX, this.posY);
             
             //visualising the bounding box
-            p5.noFill();
-            p5.stroke(255,0,0);
-            p5.rect(this.bBox.x,this.bBox.y,this.bBox.w,this.bBox.h);
+            // p5.noFill();
+            // p5.stroke(255,0,0);
+            // p5.rect(this.bBox.x,this.bBox.y,this.bBox.w,this.bBox.h);
         p5.pop();
     }
 
