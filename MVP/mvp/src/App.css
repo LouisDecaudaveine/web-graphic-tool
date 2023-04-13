@@ -63,3 +63,27 @@
 li{
   list-style: none;
 }
+
+.socket.visual-soc {
+  background: aqua;
+}
+
+.socket.number-soc {
+  background: orangered;
+}
+
+.socket.colour-soc {
+  background: #b72cd3;
+}
+
+.socket.twod-float-array-soc {
+  background: rgb(141, 128, 101);
+}
+
+.socket.twod-colour-array-soc {
+  background: rgb(92, 11, 11);
+}
+
+.socket.array-of-coordinates-soc {
+  background:rgb(28, 32, 66);
+}

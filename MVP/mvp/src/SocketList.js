@@ -1,16 +1,16 @@
 import Rete from "rete";
 
 const SocketList =  {
-    numSocket : new Rete.Socket("Float Value"),
-    colourSocket: new Rete.Socket("colour socket"),
-    floatArray2DSocket : new Rete.Socket("2D Float Array"),
-    colourArray2DSocket : new Rete.Socket("2D Colour Array"),
-    textSocket : new Rete.Socket("String value"),
-    coordArray : new Rete.Socket("Array of coordinates"),
-    layerSocket : new Rete.Socket("Array of visual compoents"), 
-    testSocket: new Rete.Socket("Purely for testing the ,erialised Parser"),
-    ListSocket: new Rete.Socket("Any Type that fits in a list"),
-    VisualSocket: new Rete.Socket("Any Type of input that has a visual representation"),
+    numSocket : new Rete.Socket("Number Soc"),
+    colourSocket: new Rete.Socket("Colour Soc"),
+    floatArray2DSocket : new Rete.Socket("twoD Float Array Soc"),
+    colourArray2DSocket : new Rete.Socket("twoD Colour Array Soc"),
+    textSocket : new Rete.Socket("Text Soc"),
+    coordArray : new Rete.Socket("Array of coordinates Soc"),
+    layerSocket : new Rete.Socket("Visual Array Soc"), 
+    testSocket: new Rete.Socket("Testing"),
+    ListSocket: new Rete.Socket("List"),
+    VisualSocket: new Rete.Socket("Visual Soc"),
 }
 
 SocketList["layerSocket"].combineWith(SocketList["VisualSocket"]);
