@@ -132,12 +132,16 @@ export default (props) => {
 		// p5.frameRate(1);
 	};  
 
-
-	const mousePressed = (p5) => {
-		if(p5.mouseX < p5.width && p5.mouseX >= 0  && p5.mouseY < p5.height && p5.mouseY >= 0){
-			startedInCanvas = true;
+	//need to check using a mouse to see if left click thing works
+	const mousePressed = (p5, event) => {
 		
-			layers.reverse().every((layer) => {
+		if(event.button == 0 && p5.mouseX < p5.width && p5.mouseX >= 0  && p5.mouseY < p5.height && p5.mouseY >= 0){
+			startedInCanvas = true;
+			for(let i = props.orderedLayers.length; i> 0; i--){
+
+			}
+			props.orderedLayers.slice().reverse().every(({id,name}) => {
+				const layer = layers.find(obj=> obj.id === id);
 				if(p5.mouseX > layer.bBox.x &&
 					p5.mouseX < layer.bBox.x + layer.bBox.w &&
 					p5.mouseY > layer.bBox.y && 
@@ -151,32 +155,33 @@ export default (props) => {
 						return false;
 					}
 				return true;	
-			})
+			});
 		}
 	} 
 
 	const mouseDragged = (p5) => {
 		if(startedInCanvas){
-			layers.reverse().every((layer) => {
+			props.orderedLayers.slice().reverse().every(({id,name}) => {
+				const layer = layers.find(obj=> obj.id === id);
 				if(layer.anchored) {
 					move(layer,p5.mouseX,p5.mouseY);
 					return false;
 				}
 				return true;
-			})
-	
+			});
 		}
 	}
 
 	const mouseReleased = (p5) => {
 		if(startedInCanvas){
-			layers.reverse().forEach((layer) => {
+			props.orderedLayers.slice().reverse().forEach(({id,name}) => {
+				const layer = layers.find(obj=> obj.id === id);
 				if(layer.anchored){
 					setSerialisedLayer(layer);
 					layer.anchored = false;
 					layer.anchorPoint = {x:null, y:null};
 				}
-			})
+			});
 			props.editedSerialisedHandler(editedVPL);
 			startedInCanvas = false
 		}
