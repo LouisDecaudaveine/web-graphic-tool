@@ -12,14 +12,22 @@ export default class EllipseComponent extends Rete.Component {
     builder(node){
         var outputVisData = new Rete.Output("outputVisData", "output", SocketList.VisualSocket, false);
         var inputColour = new Rete.Input("colour", "colour", SocketList.colourSocket, false);
-        var width = new NumController(this.editor, "width", node, false, "width");
-        var height = new NumController(this.editor, "height", node, false, "height"); 
+        var width = new Rete.Input("width", "width", SocketList.numSocket, false);
+        var height =  new Rete.Input("height", "height", SocketList.numSocket, false);
         var x = new NumController(this.editor, "xPos", node, false, "x"); 
         var y = new NumController(this.editor, "yPos", node, false, "y"); 
 
-        return node.addInput(inputColour).addControl(width).addControl(height).addControl(x).addControl(y).addOutput(outputVisData);
+        width.addControl(new NumController(this.editor, "width", node, false, "width"));
+        height.addControl(new NumController(this.editor, "height", node, false, "height"));
+
+        return node.addInput(inputColour).addInput(width).addInput(height).addControl(x).addControl(y).addOutput(outputVisData);
     }
 
-    worker(node) {
+    worker(node, inputs, outputs){
+        var w = inputs["width"].length ? inputs["width"][0] : node.data.width;
+        var h = inputs["height"].length ? inputs["height"][0] : node.data.height;
+
+        node.data.width = w;
+        node.data.height = h;
     }
 }
