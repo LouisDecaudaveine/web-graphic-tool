@@ -5,7 +5,7 @@ export default function Header(props) {
 
     return(
         <div className="header">
-            <h1 className="websiteTitle">Stinky's Playground</h1>
+            <h1 className="websiteTitle">FlowGD Sandbox</h1>
             <nav>
                 <ul className="navigator">
                     <li className="navItem"><Link to="/" className="navItem">Home</Link></li>

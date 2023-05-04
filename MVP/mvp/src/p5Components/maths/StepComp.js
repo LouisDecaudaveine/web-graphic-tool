@@ -10,7 +10,6 @@ export default function StepComp(VPLNode) {
     this.data.pos = 0;
 
     this.updateFunc = () => {
-        console.log(this.data);
         this.data.pos += this.data.stepSize;
         this.outData.num = this.data.pos;
     }
