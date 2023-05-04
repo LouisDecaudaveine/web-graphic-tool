@@ -7,13 +7,11 @@ const SocketList =  {
     colourArray2DSocket : new Rete.Socket("twoD Colour Array Soc"),
     textSocket : new Rete.Socket("Text Soc"),
     coordArray : new Rete.Socket("Array of coordinates Soc"),
-    layerSocket : new Rete.Socket("Visual Array Soc"), 
     testSocket: new Rete.Socket("Testing"),
     ListSocket: new Rete.Socket("List"),
     VisualSocket: new Rete.Socket("Visual Soc"),
 }
 
-SocketList["layerSocket"].combineWith(SocketList["VisualSocket"]);
 
 //not sure if I want a list component yet so this may be axed
 Object.entries(SocketList).forEach(([key,value]) => {
