@@ -10,4 +10,4 @@ Feel free to try it out!
 This was my first approach at trying to build the application. I came to realise the scope of what had to be build and decided to restart after doing some research on tools and frameworks that could help tackle the task.
 
 #### MVP
-This is where I restarted using Rete.js, p5.js and React.js as the basis to my project. I decided to keep proof-of-concept-v1.1.3 as a folder and not a seperate branch so that anyone can run either verison using `npm start` from either directory. 
+This is where I restarted using Rete.js, p5.js and React.js as the basis to my project. I decided to keep proof-of-concept-v1.1.3 as a folder and not a seperate branch so that anyone can run either version using `npm start` from either directory. 
